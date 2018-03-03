@@ -9,7 +9,6 @@ class ConfigureFileSection extends Component {
     super(props);
     this.state = {
       type: ConfigureFileSection.TYPE.GIT,
-      current: "none",
       url: "",
     };
   }
@@ -45,7 +44,7 @@ class ConfigureFileSection extends Component {
         <h1>{this.props.title}</h1>
         {this.props.optional && "[Optional]"}
         <div>
-          {"Current: " + this.state.current}
+          {"Current: " + this.props.current}
         </div>
 
         <div>
@@ -80,6 +79,8 @@ class ConfigureFileSection extends Component {
 
   onFileChange(content) {
     console.log(content);
+
+    this.props.setLanguageFile(this.props.id, "File", content);
   }
 
   onURLFetch(event) {
@@ -96,7 +97,10 @@ class ConfigureFileSection extends Component {
           console.log(response)
           return response.json()
           })
-        .then((response)=>console.log(response))
+        .then((content)=>{
+          this.props.setLanguageFile(this.props.id, this.state.url, content);
+          console.log(content);
+        });
     }
   }
 }

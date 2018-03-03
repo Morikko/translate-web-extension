@@ -7,11 +7,36 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      refLangBase: {}, // Last reference for the original language
-      targetLangBase: {}, // Last translation done
-      refLangUpdate: {}, // New reference for the original language
-      targetLangUpdate: {}, // New translation in progress
+    this.state = {};
+
+    for (let p of App.languagesFiles) {
+      this.state[p] = this.loadData(p, App.languageFileFactory());
+    }
+  }
+
+  static languagesFiles = [
+    "headSourceLanguage", // Current original language to translate
+    "baseSourceLanguage", // Last original language translated
+    "baseTargetLanguage", // Last Translation done
+    "headTargetLanguage", // New translation in progress
+  ]
+
+  static languageFileFactory() {
+    return {
+      source:'',
+      content: '',
+    };
+  }
+
+  loadData(name, defaultData) {
+    try {
+      if (window.sessionStorage[name]) {
+        return JSON.parse(window.sessionStorage[name]);
+      }
+      return defaultData;
+    } catch(e) {
+      console.error("App.loadData: " + e);
+      return defaultData;
     }
   }
 
@@ -30,13 +55,34 @@ class App extends Component {
             <Switch>
               <Route path={`${this.props.match.url}/help`} component={()=><h2>Help</h2>}/>
               <Route path={`${this.props.match.url}/translate`} component={()=><h2>Translate</h2>}/>
-              <Route path={`${this.props.match.url}/configure`} component={ConfigurePanel}/>
+              <Route path={`${this.props.match.url}/configure`}
+                render={(props) => {
+                  let languagesFiles = {};
+                  for (let p of App.languagesFiles) {
+                    languagesFiles[p] = this.state[p].source;
+                  }
+
+                  return <ConfigurePanel
+                            languagesFiles={languagesFiles}
+                            setLanguageFile={this.handleSetLanguageFile.bind(this)}/>
+                }}/>
               <Route path={`${this.props.match.url}/release`} component={()=><h2>Release</h2>}/>
               <Route component={()=><Redirect to={`${this.props.match.url}/configure`} />}/>
             </Switch>
           </div>
         </div>
     );
+  }
+
+  handleSetLanguageFile(id, source, content) {
+    let file = {
+      source,
+      content,
+    }
+    this.setState({
+      [id]: file,
+    });
+    window.sessionStorage[id] = JSON.stringify(file);
   }
 }
 

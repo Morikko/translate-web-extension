@@ -1,0 +1,46 @@
+.button-file {
+  position: relative;
+  /*! width: 225px; */
+  display: inline-block;
+}
+
+.button-file-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 225px;
+  padding: 14px 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.button-file-label, .option-button {
+  display: block;
+  padding: 15px;
+  background: var(--checked);
+  color: #fff;
+  font-size: 1em;
+  transition: all .4s;
+  cursor: pointer;
+}
+
+.option-button.disabled {
+  background: var(--not-checked);
+  color: #666;
+}
+
+.option-button.disabled:focus, .option-button.disabled:hover {
+  background: var(--not-checked-hover);
+}
+
+.option-button {
+  border: none
+}
+
+.button-file-input:hover+.button-file-label, .button-file-input:focus+.button-file-label, .button-file-label:hover, .button-file-label:focus, .option-button:focus, .option-button:hover {
+  background: var(--checked-hover);
+}
+
+.button-file-label {
+  text-align: center;
+}

@@ -1,0 +1,9 @@
+.select {
+  display: inline-block;
+  background-color: #bbb;
+  width: fit-content;
+}
+
+.button-file {
+  background-color: #bbb;
+}

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Route, Link} from 'react-router-dom'
+import {Route, Link, Redirect, Switch} from 'react-router-dom'
+import ConfigurePanel from './ConfigurePanel/ConfigurePanel';
 
 class App extends Component {
   constructor(props) {
@@ -26,11 +27,13 @@ class App extends Component {
             </ul>
           </header>
           <div id="panel">
-            <Route exact path={`${this.props.match.url}/`} component={()=><h2>Home</h2>}/>
-            <Route path={`${this.props.match.url}/help`} component={()=><h2>Help</h2>}/>
-            <Route path={`${this.props.match.url}/translate`} component={()=><h2>Translate</h2>}/>
-            <Route path={`${this.props.match.url}/configure`} component={()=><h2>Configure</h2>}/>
-            <Route path={`${this.props.match.url}/release`} component={()=><h2>Release</h2>}/>
+            <Switch>
+              <Route path={`${this.props.match.url}/help`} component={()=><h2>Help</h2>}/>
+              <Route path={`${this.props.match.url}/translate`} component={()=><h2>Translate</h2>}/>
+              <Route path={`${this.props.match.url}/configure`} component={ConfigurePanel}/>
+              <Route path={`${this.props.match.url}/release`} component={()=><h2>Release</h2>}/>
+              <Route component={()=><Redirect to={`${this.props.match.url}/configure`} />}/>
+            </Switch>
           </div>
         </div>
     );

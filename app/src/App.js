@@ -60,10 +60,13 @@ class App extends Component {
                 component={(props)=> {
                   let languagesFiles = {};
                   for (let p of App.languagesFiles) {
-                    languagesFiles[p] = this.state[p].content;
+                    if (this.state[p].source.length) {
+                      languagesFiles[p] = this.state[p].content;
+                    }
                   }
                     return <TranslatePanel
-                              languagesFiles={languagesFiles} />
+                              languagesFiles={languagesFiles}
+                              updateTranslation={this.updateTranslation.bind(this)}/>
                 }}/>
               <Route path={`${this.props.match.url}/configure`}
                 render={(props) => {
@@ -94,6 +97,15 @@ class App extends Component {
       [id]: file,
     });
     window.sessionStorage[id] = JSON.stringify(file);
+  }
+
+  updateTranslation(id, value) {
+    if ( value.length ) {
+      this.state.headTargetLanguage.content[id].message = value;
+    } else {
+      delete this.state.headTargetLanguage.content[id];
+    }
+    this.forceUpdate();
   }
 }
 

@@ -3,9 +3,6 @@ import './ConfigurePanel.css';
 import ConfigureFileSection from './ConfigureFileSection';
 
 class ConfigurePanel extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
 

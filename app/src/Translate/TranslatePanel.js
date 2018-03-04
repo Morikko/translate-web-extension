@@ -1,52 +1,106 @@
 import React, {Component} from 'react';
+import classNames from 'classnames'
 import './TranslatePanel.css'
 
 class TranslatePanel extends Component {
-  constructor(props) {
-    super(props);
+
+  handleTextAreaChange(event) {
+    let id = event.target.attributes["refid"].value;
+    let value = event.target.value;
+
+    this.props.updateTranslation(id, value);
   }
 
-  rowFactory(id, original="Original", target="Target", description="Description") {
-    return (
-    <div className="translate-row translate-field"
-        key={id}>
+  rowFactory(id, params = {}) {
+    params = Object.assign({
+      original: "",
+      target: "",
+      description: "",
+      new: false,
+      delete: false,
+      update: false
+    }, params);
+
+    return (<div className={
+      classNames({
+        "update": params.update,
+        "delete": params.delete,
+        "new": params.new,
+      }, "translate-row translate-field")
+    }
+    key={id}>
       <div className="translate-id">{id}</div>
-      <div className="translate-original"><p>{original}</p></div>
-      <div className="translate-target">
-          <textarea defaultValue={target}></textarea>
+      <div className="translate-original">
+        <p>{params.original}</p>
       </div>
-      <div className="translate-description">{description}</div>
+      <div className="translate-target">
+        <textarea refid={id} defaultValue={params.target}
+            onBlur={this.handleTextAreaChange.bind(this)}
+            ></textarea>
+      </div>
+      <div className="translate-description">{params.description}</div>
     </div>)
   }
 
   render() {
+    let headSourceLanguage = this.props.languagesFiles["headSourceLanguage"];
+    let baseSourceLanguage = this.props.languagesFiles["baseSourceLanguage"];
+    let headTargetLanguage = this.props.languagesFiles["headTargetLanguage"];
+    let baseTargetLanguage = this.props.languagesFiles["baseTargetLanguage"];
+
     let array = [];
 
-    for (let field in this.props.languagesFiles["headSourceLanguage"]) {
-      array.push(this.rowFactory(
-        field,
-        this.props.languagesFiles["headSourceLanguage"][field].message,
-        "target",
-        this.props.languagesFiles["headSourceLanguage"][field].description
-      ))
+    for (let field in headSourceLanguage) {
+      let params = {
+        original: "",
+        target: "",
+        description: "",
+        new: false,
+        delete: false,
+        update: false
+      };
+
+      if (headSourceLanguage[field]) {
+        params.original = headSourceLanguage[field].message;
+        params.description = headSourceLanguage[field].description;
+      }
+
+      if (headTargetLanguage && headTargetLanguage[field]) {
+        params.target = headTargetLanguage[field].message;
+      }
+
+      if (baseSourceLanguage && baseTargetLanguage && headSourceLanguage[field] && !baseSourceLanguage[field]
+        && !baseTargetLanguage[field]) {
+          params.new = true;
+      }
+
+      if (baseSourceLanguage && !headSourceLanguage[field] && baseSourceLanguage[field]) {
+          params.delete = true;
+      }
+
+      if (baseSourceLanguage && headSourceLanguage[field] &&
+          baseSourceLanguage[field]
+          && headSourceLanguage[field].message !== baseSourceLanguage[field].message) {
+          params.update = true;
+      }
+
+      array.push(this.rowFactory(field, params));
     }
 
-    return (
-      <div id="translate-panel">
-        <div id="translate-controls">
-          Controls
-        </div>
-        <div id="translate-header" className="translate-row">
-          <div>id</div>
-          <div>Original language</div>
-          <div>Target language</div>
-          <div>Description</div>
-        </div>
-        <div id="translate-content">
-          {array}
-        </div>
+    return (<div id="translate-panel">
+      <div id="translate-controls">
+        Controls
       </div>
-      );
+      <div id="translate-header" className="translate-row">
+        <div>id</div>
+        <div>Original language</div>
+        <div>Target language</div>
+        <div>Description</div>
+      </div>
+      <div id="translate-content">
+        {array}
+      </div>
+    </div>);
   }
 }
 

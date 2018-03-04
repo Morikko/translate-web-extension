@@ -45,6 +45,19 @@
 
 }
 
+.new .translate-original, .new .translate-target {
+  border: 2px solid blue;
+}
+.update .translate-original, .update .translate-targe {
+  border: 2px solid yellow;
+}
+.delete .translate-original, .delete .translate-targe {
+  border: 2px solid red;
+}
+.done .translate-original, .done .translate-targe {
+  border: 1px solid green;
+}
+
 .translate-target {
   box-sizing: border-box;
   display: flex;

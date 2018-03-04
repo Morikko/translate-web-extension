@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './App.css';
 import {Route, Link, Redirect, Switch} from 'react-router-dom'
 import ConfigurePanel from './ConfigurePanel/ConfigurePanel';
+import TranslatePanel from './Translate/TranslatePanel';
 
 class App extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class App extends Component {
 
   render() {
     return (
-        <div className="App">
+        <div className="App" style={{maxHeight: window.innerHeight}}>
           <header className="App-header">
             <ul>
               <li><Link to={`${this.props.match.url}/help`}>Help</Link></li>
@@ -51,10 +52,14 @@ class App extends Component {
               <li><Link to={`${this.props.match.url}/release`}>Release</Link></li>
             </ul>
           </header>
+          <div style={{position: "relative", flex: 1}}>
           <div id="panel">
             <Switch>
               <Route path={`${this.props.match.url}/help`} component={()=><h2>Help</h2>}/>
-              <Route path={`${this.props.match.url}/translate`} component={()=><h2>Translate</h2>}/>
+              <Route path={`${this.props.match.url}/translate`}
+                component={(props)=> {
+                    return <TranslatePanel />
+                }}/>
               <Route path={`${this.props.match.url}/configure`}
                 render={(props) => {
                   let languagesFiles = {};
@@ -70,6 +75,7 @@ class App extends Component {
               <Route component={()=><Redirect to={`${this.props.match.url}/configure`} />}/>
             </Switch>
           </div>
+        </div>
         </div>
     );
   }

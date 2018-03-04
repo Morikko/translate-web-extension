@@ -4,6 +4,8 @@
   flex-direction: column;
   align-items: stretch;
   height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .tab-header {

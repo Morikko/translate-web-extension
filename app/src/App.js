@@ -49,7 +49,8 @@ class App extends Component {
               <li><Link to={`${this.props.match.url}/help`}>Help</Link></li>
               <li><Link to={`${this.props.match.url}/configure`}>Configure</Link></li>
               <li><Link to={`${this.props.match.url}/translate`}>Translate</Link></li>
-              <li><Link to={`${this.props.match.url}/release`}>Release</Link></li>
+              <li style={{cursor: "pointer"}}
+                  onClick={this.downloadTranslatedFile.bind(this)}>Release</li>
             </ul>
           </header>
           <div style={{position: "relative", flex: 1}}>
@@ -84,8 +85,22 @@ class App extends Component {
             </Switch>
           </div>
         </div>
+        <a href="" download id="download-final" hidden></a>
         </div>
     );
+  }
+
+  downloadTranslatedFile(event) {
+    let download = document.getElementById('download-final');
+    let url = URL.createObjectURL(new Blob([
+      JSON.stringify(this.state.headTargetLanguage.content)
+    ], {
+      type: 'application/json'
+    }));
+    download.href = url;
+    download.download = "messages.json";
+    download.click();
+    URL.revokeObjectURL(url);
   }
 
   handleSetLanguageFile(id, source, content) {
@@ -106,6 +121,7 @@ class App extends Component {
       delete this.state.headTargetLanguage.content[id];
     }
     this.forceUpdate();
+    window.sessionStorage.headTargetLanguage = JSON.stringify(this.state.headTargetLanguage);
   }
 }
 

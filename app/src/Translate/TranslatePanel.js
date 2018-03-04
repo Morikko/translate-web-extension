@@ -6,35 +6,45 @@ class TranslatePanel extends Component {
     super(props);
   }
 
-  rowFactory() {
+  rowFactory(id, original="Original", target="Target", description="Description") {
     return (
-    <tr className="translate-row">
-      <td>Id: {Math.round(Math.random() * 999999)}</td>
-      <td><textarea>Original</textarea></td>
-      <td><textarea>Target</textarea></td>
-      <td>Description</td>
-    </tr>)
+    <div className="translate-row translate-field"
+        key={id}>
+      <div className="translate-id">{id}</div>
+      <div className="translate-original"><p>{original}</p></div>
+      <div className="translate-target">
+          <textarea defaultValue={target}></textarea>
+      </div>
+      <div className="translate-description">{description}</div>
+    </div>)
   }
 
   render() {
     let array = [];
-    for (let i = 0; i < 12; i++) {
-      array.push(this.rowFactory())
+
+    for (let field in this.props.languagesFiles["headSourceLanguage"]) {
+      array.push(this.rowFactory(
+        field,
+        this.props.languagesFiles["headSourceLanguage"][field].message,
+        "target",
+        this.props.languagesFiles["headSourceLanguage"][field].description
+      ))
     }
 
-    return (<div id="translate-panel">
-      <div id="translate-controls">
-        Controls
-      </div>
-      <table id="translate-content">
-        <tr id="translate-header" className="translate-row">
-          <th>id</th>
-          <th>Original language</th>
-          <th>Target language</th>
-          <th>Description</th>
-        </tr>
-        {array}
-      </table>
+    return (
+      <div id="translate-panel">
+        <div id="translate-controls">
+          Controls
+        </div>
+        <div id="translate-header" className="translate-row">
+          <div>id</div>
+          <div>Original language</div>
+          <div>Target language</div>
+          <div>Description</div>
+        </div>
+        <div id="translate-content">
+          {array}
+        </div>
       </div>
       );
   }

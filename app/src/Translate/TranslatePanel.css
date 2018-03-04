@@ -1,7 +1,8 @@
 #translate-panel {
+  max-height: 100%;
   height: 100%;
-  width: 100%;
-  overflow: auto;
+  display: grid;
+  grid-template-rows: 30px 30px 1fr;
 }
 
 #translate-controls {
@@ -9,47 +10,48 @@
   text-align: center;
 }
 
-#translate-controls div {
-  background-color: #ccc;
+.translate-row {
+  display: grid;
+  grid-template-columns: 15fr 30fr 30fr 25fr;
 }
 
 #translate-header {
-
-}
-
-#translate-header th {
   border-bottom: 1px solid #000;
+  justify-items: center;
+  align-items: center;
 }
 
 #translate-content {
-  width: 100%;
-  table-layout: fixed;
+  display: inline-block;
+  min-height: 0;
+  overflow: auto;
 }
 
-.translate-row {
+.translate-field{
+  width: 100%;
   min-height: 100px;
-  height: 100px;
-  max-height: 200px;
 }
 
-#translate-content textarea{
-  width: 100%;
-  height: 100%;
-  resize:vertical;
+.translate-field div{
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin: 3px;
+  padding: 3px;
+  position: relative;
+  overflow: hidden;
 }
 
-th:nth-child(1) {
-  width: 15%;
+.translate-id {
+
 }
 
-th:nth-child(2) {
-  width: 30%;
+.translate-target {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
 }
 
-th:nth-child(3) {
-  width: 30%;
-}
-
-th:nth-child(4) {
-  width: 25%;
+.translate-target textarea{
+  resize:none;
+  flex: 1;
 }

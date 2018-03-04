@@ -58,7 +58,12 @@ class App extends Component {
               <Route path={`${this.props.match.url}/help`} component={()=><h2>Help</h2>}/>
               <Route path={`${this.props.match.url}/translate`}
                 component={(props)=> {
-                    return <TranslatePanel />
+                  let languagesFiles = {};
+                  for (let p of App.languagesFiles) {
+                    languagesFiles[p] = this.state[p].content;
+                  }
+                    return <TranslatePanel
+                              languagesFiles={languagesFiles} />
                 }}/>
               <Route path={`${this.props.match.url}/configure`}
                 render={(props) => {

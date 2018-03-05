@@ -45,17 +45,20 @@
 
 }
 
-.new .translate-original, .new .translate-target {
+.new .translate-original {
   border: 2px solid blue;
 }
-.update .translate-original, .update .translate-targe {
+.update .translate-original {
   border: 2px solid yellow;
 }
-.delete .translate-original, .delete .translate-targe {
+.delete .translate-original {
   border: 2px solid red;
 }
-.done .translate-original, .done .translate-targe {
+.done .translate-original {
   border: 1px solid green;
+}
+.diff .translate-target {
+  border: 2px solid yellow;
 }
 
 .translate-target {

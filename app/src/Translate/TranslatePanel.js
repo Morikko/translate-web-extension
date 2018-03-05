@@ -18,7 +18,8 @@ class TranslatePanel extends Component {
       description: "",
       new: false,
       delete: false,
-      update: false
+      update: false,
+      diff: false
     }, params);
 
     return (<div className={
@@ -26,6 +27,7 @@ class TranslatePanel extends Component {
         "update": params.update,
         "delete": params.delete,
         "new": params.new,
+        "diff": params.diff,
       }, "translate-row translate-field")
     }
     key={id}>
@@ -57,7 +59,8 @@ class TranslatePanel extends Component {
         description: "",
         new: false,
         delete: false,
-        update: false
+        update: false,
+        diff: false,
       };
 
       if (headSourceLanguage[field]) {
@@ -76,6 +79,15 @@ class TranslatePanel extends Component {
 
       if (baseSourceLanguage && !headSourceLanguage[field] && baseSourceLanguage[field]) {
           params.delete = true;
+      }
+
+      if (baseTargetLanguage && headTargetLanguage ) {
+        if ( !baseTargetLanguage[field] && headTargetLanguage[field] ) {
+          params.diff = true;
+        }
+        if (baseTargetLanguage[field] && headTargetLanguage[field] && headTargetLanguage[field].message !== baseTargetLanguage[field].message) {
+          params.diff = true;
+        }
       }
 
       if (baseSourceLanguage && headSourceLanguage[field] &&

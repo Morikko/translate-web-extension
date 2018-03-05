@@ -116,11 +116,14 @@ class App extends Component {
 
   updateTranslation(id, value) {
     if ( value.length ) {
+      if ( !this.state.headTargetLanguage.content[id] ) {
+        this.state.headTargetLanguage.content[id] = {};
+      }
       this.state.headTargetLanguage.content[id].message = value;
     } else {
       delete this.state.headTargetLanguage.content[id];
     }
-    this.forceUpdate();
+    //this.forceUpdate();
     window.sessionStorage.headTargetLanguage = JSON.stringify(this.state.headTargetLanguage);
   }
 }

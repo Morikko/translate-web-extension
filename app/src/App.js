@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import './App.css';
-import {Route, Link, Redirect, Switch} from 'react-router-dom'
+import {Route, Redirect, Switch} from 'react-router-dom'
 import ConfigurePanel from './Configure/ConfigurePanel';
 import TranslatePanel from './Translate/TranslatePanel';
+import LanguageFiles from './LanguageFiles'
+import AppNavBar from './NavBar'
 
 class App extends Component {
   constructor(props) {
@@ -10,87 +12,56 @@ class App extends Component {
 
     this.state = {};
 
-    for (let p of App.languagesFiles) {
-      this.state[p] = this.loadData(p, App.languageFileFactory());
-    }
-  }
-
-  static languagesFiles = [
-    "headSourceLanguage", // Current original language to translate
-    "baseSourceLanguage", // Last original language translated
-    "baseTargetLanguage", // Last Translation done
-    "headTargetLanguage", // New translation in progress
-  ]
-
-  static languageFileFactory() {
-    return {
-      source:'',
-      content: {},
-    };
-  }
-
-  loadData(name, defaultData) {
-    try {
-      if (window.sessionStorage[name]) {
-        return JSON.parse(window.sessionStorage[name]);
-      }
-      return defaultData;
-    } catch(e) {
-      console.error("App.loadData: " + e);
-      return defaultData;
+    for (let p of LanguageFiles.ids) {
+      this.state[p] = LanguageFiles.loadData(
+        p
+        , LanguageFiles.languageFileFactory());
     }
   }
 
   render() {
     return (
         <div className="App" style={{maxHeight: window.innerHeight}}>
-          <header className="App-header">
-            <ul>
-              <li><Link
-                  to={`${this.props.match.url}/help`}>Help</Link></li>
-              <li><Link
-                  to={`${this.props.match.url}/configure`}>Configure</Link></li>
-              <li><Link
-                  to={`${this.props.match.url}/translate`}>Translate</Link></li>
-              <li style={{cursor: "pointer"}}
-                  onClick={this.downloadTranslatedFile.bind(this)}>Release</li>
-              <li style={{cursor: "pointer"}}
-                  onClick={this.reset.bind(this)}>Reset</li>
-            </ul>
-          </header>
+          <AppNavBar {...this.props}/>
           <div style={{position: "relative", flex: 1}}>
           <div id="panel">
             <Switch>
-              <Route path={`${this.props.match.url}/help`} component={()=><h2>Help</h2>}/>
+              <Route path={`${this.props.match.url}/help`}
+                      component={()=><h2>Help</h2>}/>
               <Route path={`${this.props.match.url}/translate`}
-                component={(props)=> {
-                  let languagesFiles = {};
-                  for (let p of App.languagesFiles) {
-                    languagesFiles[p] = this.state[p].content;
-                  }
-                    return <TranslatePanel
-                              languagesFiles={languagesFiles}
-                              updateTranslation={this.updateTranslation.bind(this)}/>
-                }}/>
+                      render={this.getTranslatePanel.bind(this)}/>
               <Route path={`${this.props.match.url}/configure`}
-                render={(props) => {
-                  let languagesFiles = {};
-                  for (let p of App.languagesFiles) {
-                    languagesFiles[p] = this.state[p].source;
-                  }
-
-                  return <ConfigurePanel
-                            languagesFiles={languagesFiles}
-                            setLanguageFile={this.handleSetLanguageFile.bind(this)}/>
-                }}/>
-              <Route path={`${this.props.match.url}/release`} component={()=><h2>Release</h2>}/>
+                      render={this.getConfigurePanel.bind(this)}/>
+              <Route path={`${this.props.match.url}/release`}
+                      component={()=><h2>Release</h2>}/>
               <Route component={()=><Redirect to={`${this.props.match.url}/configure`} />}/>
             </Switch>
           </div>
         </div>
-        <a href="" download id="download-final" hidden></a>
+        <a href="" download id="download-final" hidden>Get translated file</a>
         </div>
     );
+  }
+
+  getTranslatePanel(props) {
+    let languagesFiles = {};
+    for (let p of LanguageFiles.ids) {
+      languagesFiles[p] = this.state[p].content;
+    }
+      return <TranslatePanel
+                languagesFiles={languagesFiles}
+                updateTranslation={this.updateTranslation.bind(this)}/>
+  }
+
+  getConfigurePanel(props) {
+    let languagesFiles = {};
+    for (let p of LanguageFiles.ids) {
+      languagesFiles[p] = this.state[p].source;
+    }
+
+    return <ConfigurePanel
+              languagesFiles={languagesFiles}
+              setLanguageFile={this.handleSetLanguageFile.bind(this)}/>
   }
 
   handleSetLanguageFile(id, source, content) {
@@ -132,8 +103,8 @@ class App extends Component {
 
   reset(event) {
     let newState = {};
-    App.languagesFiles.map((file)=>{
-      newState[file] = App.languageFileFactory();
+    App.ids.forEach((file)=>{
+      newState[file] = LanguageFiles.languageFileFactory();
       window.sessionStorage.removeItem(file);
     })
     this.setState(newState);

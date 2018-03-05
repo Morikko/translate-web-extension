@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import classNames from 'classnames'
 import TranslateRow from './TranslateRow'
 import './TranslatePanel.css'
 
@@ -17,6 +16,7 @@ class TranslatePanel extends Component {
       array.push(
         <TranslateRow
           field={field}
+          key={field}
           headSourceField={headSourceLanguage[field]}
           headTargetField={headTargetLanguage[field]}
           baseSourceField={baseSourceLanguage[field]}

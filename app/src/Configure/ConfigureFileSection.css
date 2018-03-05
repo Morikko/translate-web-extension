@@ -7,3 +7,14 @@
 .button-file {
   background-color: #bbb;
 }
+
+.git-section {
+  display: flex;
+
+}
+
+.input-git-url {
+  max-width: 600px;
+  min-width: 200px;
+  flex:1;
+}

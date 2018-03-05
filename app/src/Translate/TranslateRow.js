@@ -68,8 +68,7 @@ class TranslateRow extends Component {
         "new": params.new,
         "diff": params.diff,
       }, "translate-row translate-field")
-    }
-    key={id}>
+    }>
       <div className="translate-id">{id}</div>
       <div className="translate-original">
         <p>{params.original}</p>

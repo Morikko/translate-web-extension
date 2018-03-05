@@ -1,12 +1,11 @@
 .select {
+  display: block;
   position: relative;
-  display: inline-block;
   width: 100%;
   margin-bottom: 5px;
 }
 
 .select select {
-  display: inline-block;
   width: 200px;
   padding: 10px 15px;
   cursor: pointer;

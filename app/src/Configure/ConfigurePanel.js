@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './ConfigurePanel.css';
 import ConfigureFileSection from './ConfigureFileSection';
+import LanguageFiles from '../LanguageFiles'
 
 class ConfigurePanel extends Component {
 
@@ -8,11 +9,13 @@ class ConfigurePanel extends Component {
 
     let configureFileArray = [];
 
-    for (let p in this.props.languagesFiles) {
+    for (let p in LanguageFiles.Information) {
       configureFileArray.push(
         <ConfigureFileSection
-          title={p} id={p}
-          current={this.props.languagesFiles[p]} key={p}
+          title={LanguageFiles.Information[p].title}
+          id={p}
+          current={this.props.languagesFiles[p]}
+          key={p}
           setLanguageFile={this.props.setLanguageFile}
           />
       )

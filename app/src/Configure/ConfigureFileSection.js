@@ -22,8 +22,8 @@ class ConfigureFileSection extends Component {
          title="Import file from disk"
          onFileSelected={this.onFileChange.bind(this)}/>
       </span>),
-     gitSection = (<span>
-       <input type="text"
+     gitSection = (<span className="git-section">
+       <input type="text" className="input-git-url"
          value={this.state.url}
          onBlur={this.onChangeURL.bind(this)}
          onInput={this.onChangeURL.bind(this)}/>

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './App.css';
 import {Route, Link, Redirect, Switch} from 'react-router-dom'
-import ConfigurePanel from './ConfigurePanel/ConfigurePanel';
+import ConfigurePanel from './Configure/ConfigurePanel';
 import TranslatePanel from './Translate/TranslatePanel';
 
 class App extends Component {
@@ -25,7 +25,7 @@ class App extends Component {
   static languageFileFactory() {
     return {
       source:'',
-      content: '',
+      content: {},
     };
   }
 
@@ -46,11 +46,16 @@ class App extends Component {
         <div className="App" style={{maxHeight: window.innerHeight}}>
           <header className="App-header">
             <ul>
-              <li><Link to={`${this.props.match.url}/help`}>Help</Link></li>
-              <li><Link to={`${this.props.match.url}/configure`}>Configure</Link></li>
-              <li><Link to={`${this.props.match.url}/translate`}>Translate</Link></li>
+              <li><Link
+                  to={`${this.props.match.url}/help`}>Help</Link></li>
+              <li><Link
+                  to={`${this.props.match.url}/configure`}>Configure</Link></li>
+              <li><Link
+                  to={`${this.props.match.url}/translate`}>Translate</Link></li>
               <li style={{cursor: "pointer"}}
                   onClick={this.downloadTranslatedFile.bind(this)}>Release</li>
+              <li style={{cursor: "pointer"}}
+                  onClick={this.reset.bind(this)}>Reset</li>
             </ul>
           </header>
           <div style={{position: "relative", flex: 1}}>
@@ -61,9 +66,7 @@ class App extends Component {
                 component={(props)=> {
                   let languagesFiles = {};
                   for (let p of App.languagesFiles) {
-                    if (this.state[p].source.length) {
-                      languagesFiles[p] = this.state[p].content;
-                    }
+                    languagesFiles[p] = this.state[p].content;
                   }
                     return <TranslatePanel
                               languagesFiles={languagesFiles}
@@ -90,19 +93,6 @@ class App extends Component {
     );
   }
 
-  downloadTranslatedFile(event) {
-    let download = document.getElementById('download-final');
-    let url = URL.createObjectURL(new Blob([
-      JSON.stringify(this.state.headTargetLanguage.content)
-    ], {
-      type: 'application/json'
-    }));
-    download.href = url;
-    download.download = "messages.json";
-    download.click();
-    URL.revokeObjectURL(url);
-  }
-
   handleSetLanguageFile(id, source, content) {
     let file = {
       source,
@@ -117,7 +107,7 @@ class App extends Component {
   updateTranslation(id, value) {
     if ( value.length ) {
       if ( !this.state.headTargetLanguage.content[id] ) {
-        this.state.headTargetLanguage.content[id] = {};
+        this.state.headTargetLanguage.content[id] = {...this.state.headSourceLanguage.content[id]};
       }
       this.state.headTargetLanguage.content[id].message = value;
     } else {
@@ -125,6 +115,28 @@ class App extends Component {
     }
     //this.forceUpdate();
     window.sessionStorage.headTargetLanguage = JSON.stringify(this.state.headTargetLanguage);
+  }
+
+  downloadTranslatedFile(event) {
+    let download = document.getElementById('download-final');
+    let url = URL.createObjectURL(new Blob([
+      JSON.stringify(this.state.headTargetLanguage.content)
+    ], {
+      type: 'application/json'
+    }));
+    download.href = url;
+    download.download = "messages.json";
+    download.click();
+    URL.revokeObjectURL(url);
+  }
+
+  reset(event) {
+    let newState = {};
+    App.languagesFiles.map((file)=>{
+      newState[file] = App.languageFileFactory();
+      window.sessionStorage.removeItem(file);
+    })
+    this.setState(newState);
   }
 }
 

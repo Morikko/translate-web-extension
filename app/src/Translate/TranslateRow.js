@@ -1,8 +1,17 @@
 import React, {Component} from 'react';
 import classNames from 'classnames'
 import './TranslateRow.css'
+//import jsdiff from 'diff'
+var jsdiff = require('diff');
 
 class TranslateRow extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      original: 'new',
+    }
+  }
 
   render() {
     let params = {
@@ -17,7 +26,29 @@ class TranslateRow extends Component {
 
 
     if (this.props.headSourceField) {
-      params.original = this.props.headSourceField.message;
+      if ( !this.props.baseSourceField) {
+        params.original = this.props.headSourceField.message;
+      } else {
+        params.original = (
+          <span>
+          {
+            jsdiff.diffWords(
+              this.props.baseSourceField.message,
+              this.props.headSourceField.message).map((part)=>{
+                let color = part.added ? 'added' :
+                  part.removed ? 'removed' : 'unchanged';
+
+                return (
+                  <span className={color}
+                        key={Math.random()}>
+                    {part.value}
+                  </span>
+                );
+              })
+          }
+        </span>)
+      }
+
       params.description = this.props.headSourceField.description;
     }
 
@@ -69,9 +100,14 @@ class TranslateRow extends Component {
         "diff": params.diff,
       }, "translate-row translate-field")
     }>
-      <div className="translate-id">{id}</div>
-      <div className="translate-original">
+      <div className="translate-id"><p>{id}</p></div>
+      <div className={"translate-original "+this.state.original}>
         <p>{params.original}</p>
+        {
+          params.update &&
+          <div className="change"
+            onClick={this.changeOriginal.bind(this)}></div>
+        }
       </div>
       <div className="translate-target" key={"div-"+id}>
         <textarea
@@ -83,6 +119,16 @@ class TranslateRow extends Component {
       </div>
       <div className="translate-description">{params.description}</div>
     </div>)
+  }
+
+  changeOriginal(event) {
+    let newOriginal = "new";
+    if ( this.state.original === "new" ) {
+      newOriginal = "old";
+    }
+    this.setState({
+      original: newOriginal
+    })
   }
 
   handleTextAreaChange(event) {

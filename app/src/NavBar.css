@@ -1,0 +1,10 @@
+.navbar a {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: inherit;
+}
+
+.navbar a:hover {
+  color: #fff;
+  background-color: transparent;
+}

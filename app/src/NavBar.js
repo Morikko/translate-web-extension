@@ -33,10 +33,16 @@ class AppNavBar extends Component {
             </Navbar.Text>
           <Nav>
             <NavDropdown eventKey={3} title="Project" id="basic-nav-dropdown">
-              <MenuItem eventKey={3.1}>Save</MenuItem>
-              <MenuItem eventKey={3.2}>Reset</MenuItem>
+              <MenuItem eventKey={3.1}
+                onClick={this.props.onSave}>Save</MenuItem>
+              <MenuItem eventKey={3.2}
+                onClick={this.props.onReset}
+                style={{
+                  
+                }}>Reset</MenuItem>
               <MenuItem divider />
-              <MenuItem eventKey={3.3}>Release</MenuItem>
+              <MenuItem eventKey={3.3}
+                onClick={this.props.onRelease}>Release</MenuItem>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

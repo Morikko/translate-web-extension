@@ -8,6 +8,7 @@
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1"
   },
   "scripts": {
@@ -16,7 +17,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "npm run predeploy && gh-pages -d build",
     "cleanup": "rm -rf node_modules/gh-pages/.cache"
   },
   "homepage": "http://morriko.github.io/translate-web-extension",

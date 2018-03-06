@@ -2,6 +2,7 @@
   color: inherit;
   cursor: pointer;
   text-decoration: inherit;
+  outline: none;
 }
 
 .navbar a:hover {

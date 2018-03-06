@@ -41,6 +41,15 @@ class TranslatePanel extends Component {
       </div>
     </div>);
   }
+
+  componentDidMount(){
+  }
+
+  componentWillUnmount(){
+  }
+
+  componentDidUpdate(){
+  }
 }
 
 export default TranslatePanel;

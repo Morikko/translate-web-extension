@@ -22,6 +22,7 @@
   font-size: 1em;
   transition: all .4s;
   cursor: pointer;
+  margin: 0;
 }
 
 .option-button.disabled {

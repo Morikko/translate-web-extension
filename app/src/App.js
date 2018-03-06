@@ -3,6 +3,7 @@ import './App.css';
 import {Route, Redirect, Switch} from 'react-router-dom'
 import ConfigurePanel from './Configure/ConfigurePanel';
 import TranslatePanel from './Translate/TranslatePanel';
+import HelpPanel from './HelpPanel'
 import LanguageFiles from './LanguageFiles'
 import AppNavBar from './NavBar'
 
@@ -17,24 +18,32 @@ class App extends Component {
         p
         , LanguageFiles.languageFileFactory());
     }
+
+    this.getTranslatePanel = this.getTranslatePanel.bind(this);
+    this.getConfigurePanel =this.getConfigurePanel.bind(this);
   }
 
   render() {
     return (
         <div className="App" style={{maxHeight: window.innerHeight}}>
-          <AppNavBar {...this.props}/>
+          <AppNavBar {...this.props}
+              onRelease={this.downloadTranslatedFile.bind(this)}
+              onReset={this.reset.bind(this)}
+              onSave={this.exportApp.bind(this)}/>
+
           <div style={{position: "relative", flex: 1}}>
           <div id="panel">
             <Switch>
               <Route path={`${this.props.match.url}/help`}
-                      component={()=><h2>Help</h2>}/>
+                      render={()=> <HelpPanel/>} />
               <Route path={`${this.props.match.url}/translate`}
-                      render={this.getTranslatePanel.bind(this)}/>
+                      render={(props)=>this.getTranslatePanel(props)}/>
               <Route path={`${this.props.match.url}/configure`}
-                      render={this.getConfigurePanel.bind(this)}/>
+                      render={(props)=>this.getConfigurePanel(props)}/>
               <Route path={`${this.props.match.url}/release`}
-                      component={()=><h2>Release</h2>}/>
-              <Route component={()=><Redirect to={`${this.props.match.url}/configure`} />}/>
+                      render={()=><h2>Release</h2>}/>
+              <Route component={()=><Redirect
+                      to={`${this.props.match.url}/configure`} />}/>
             </Switch>
           </div>
         </div>
@@ -49,6 +58,7 @@ class App extends Component {
       languagesFiles[p] = this.state[p].content;
     }
       return <TranslatePanel
+                {...props}
                 languagesFiles={languagesFiles}
                 updateTranslation={this.updateTranslation.bind(this)}/>
   }
@@ -60,6 +70,7 @@ class App extends Component {
     }
 
     return <ConfigurePanel
+              loadProject={this.loadApp.bind(this)}
               languagesFiles={languagesFiles}
               setLanguageFile={this.handleSetLanguageFile.bind(this)}/>
   }
@@ -103,11 +114,42 @@ class App extends Component {
 
   reset(event) {
     let newState = {};
-    App.ids.forEach((file)=>{
+    LanguageFiles.ids.forEach((file)=>{
       newState[file] = LanguageFiles.languageFileFactory();
       window.sessionStorage.removeItem(file);
     })
     this.setState(newState);
+  }
+
+  exportApp(event) {
+    let download = document.getElementById('download-final');
+    let url = URL.createObjectURL(new Blob([
+      JSON.stringify({
+        name: "translate-web-extension",
+        appstate: this.state,
+      })
+    ], {
+      type: 'application/json'
+    }));
+    download.href = url;
+    download.download = "project.json";
+    download.click();
+    URL.revokeObjectURL(url);
+  }
+
+  loadApp(content) {
+    if ( content.name === "translate-web-extension") {
+      if ( content.appstate ) {
+        this.setState(content.appstate);
+        for (let p in content.appstate) {
+          window.sessionStorage[p] = JSON.stringify(content.appstate[p]);
+        }
+      } else {
+        console.log("Wrong JSON file: No App to load.")
+      }
+    } else {
+      console.log("Wrong JSON file: It is not a project.")
+    }
   }
 }
 

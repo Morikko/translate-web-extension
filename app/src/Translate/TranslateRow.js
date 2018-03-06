@@ -135,6 +135,8 @@ class TranslateRow extends Component {
     let id = event.target.attributes["refid"].value;
     let value = event.target.value;
 
+    this.forceUpdate();
+
     this.props.updateTranslation(id, value);
   }
 }

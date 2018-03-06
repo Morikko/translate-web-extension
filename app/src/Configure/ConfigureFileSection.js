@@ -41,7 +41,7 @@ class ConfigureFileSection extends Component {
 
     return (
       <div className="file-section">
-        <h1>{this.props.title}</h1>
+        <h2>{this.props.title}</h2>
         {this.props.optional && "[Optional]"}
         <div>
           {"Current: " + this.props.current}
@@ -58,7 +58,9 @@ class ConfigureFileSection extends Component {
               {value: ConfigureFileSection.TYPE.GIT, label:"Git"}
             ]}
             />
-           {typeSection}
+           <div>
+             {typeSection}
+           </div>
 
         </div>
       </div>

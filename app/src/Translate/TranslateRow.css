@@ -1,6 +1,5 @@
 .translate-field{
   width: 100%;
-  min-height: 100px;
 }
 
 .translate-field > div{
@@ -10,6 +9,7 @@
   padding: 3px;
   position: relative;
   overflow: hidden;
+  min-height: 100px;
 }
 
 .translate-id {
@@ -17,6 +17,22 @@
   display: flex;
   align-items: center;
   font-weight: bold;
+  grid-area: id;
+}
+
+.translate-original {
+  grid-area: original;
+}
+
+.translate-description {
+  grid-area: description;
+}
+
+.translate-target {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  grid-area: target;
 }
 
 .new .translate-original {
@@ -33,12 +49,6 @@
 }
 .diff .translate-target {
   border: 2px solid yellow;
-}
-
-.translate-target {
-  box-sizing: border-box;
-  display: flex;
-  align-items: stretch;
 }
 
 .translate-target textarea{

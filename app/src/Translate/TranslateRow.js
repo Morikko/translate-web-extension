@@ -61,9 +61,11 @@ class TranslateRow extends Component {
         params.new = true;
     }
 
+    /* IMPOSSIBLE
     if (!this.props.headSourceField && this.props.baseSourceField) {
         params.delete = true;
     }
+    */
 
     if ( !this.props.baseTargetField && this.props.headTargetField ) {
       params.diff = true;
@@ -94,6 +96,7 @@ class TranslateRow extends Component {
 
     return (<div className={
       classNames({
+        "hidden": !params.update && !params.new && !params.diff,
         "update": params.update,
         "delete": params.delete,
         "new": params.new,

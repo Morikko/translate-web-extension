@@ -43,12 +43,15 @@ class TranslatePanel extends Component {
   }
 
   componentDidMount(){
+    console.log("Translate mounted");
   }
 
   componentWillUnmount(){
+    console.log("Translate unmounted");
   }
 
   componentDidUpdate(){
+    console.log("Translate updated");
   }
 }
 

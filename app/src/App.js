@@ -20,12 +20,15 @@ class App extends Component {
     }
 
     this.getTranslatePanel = this.getTranslatePanel.bind(this);
-    this.getConfigurePanel =this.getConfigurePanel.bind(this);
+    this.getConfigurePanel = this.getConfigurePanel.bind(this);
+    this.updateTranslation = this.updateTranslation.bind(this);
+    this.loadApp = this.loadApp.bind(this);
+    this.handleSetLanguageFile = this.handleSetLanguageFile.bind(this);
   }
 
   render() {
     return (
-        <div className="App" style={{maxHeight: window.innerHeight}}>
+        <div className="App">
           <AppNavBar {...this.props}
               onRelease={this.downloadTranslatedFile.bind(this)}
               onReset={this.reset.bind(this)}
@@ -37,7 +40,7 @@ class App extends Component {
               <Route path={`${this.props.match.url}/help`}
                       render={()=> <HelpPanel/>} />
               <Route path={`${this.props.match.url}/translate`}
-                      render={(props)=>this.getTranslatePanel(props)}/>
+                      render={()=>this.getTranslatePanel()}/>
               <Route path={`${this.props.match.url}/configure`}
                       render={(props)=>this.getConfigurePanel(props)}/>
               <Route path={`${this.props.match.url}/release`}
@@ -52,15 +55,14 @@ class App extends Component {
     );
   }
 
-  getTranslatePanel(props) {
+  getTranslatePanel() {
     let languagesFiles = {};
     for (let p of LanguageFiles.ids) {
       languagesFiles[p] = this.state[p].content;
     }
       return <TranslatePanel
-                {...props}
                 languagesFiles={languagesFiles}
-                updateTranslation={this.updateTranslation.bind(this)}/>
+                updateTranslation={this.updateTranslation}/>
   }
 
   getConfigurePanel(props) {
@@ -70,9 +72,9 @@ class App extends Component {
     }
 
     return <ConfigurePanel
-              loadProject={this.loadApp.bind(this)}
+              loadProject={this.loadApp}
               languagesFiles={languagesFiles}
-              setLanguageFile={this.handleSetLanguageFile.bind(this)}/>
+              setLanguageFile={this.handleSetLanguageFile}/>
   }
 
   handleSetLanguageFile(id, source, content) {

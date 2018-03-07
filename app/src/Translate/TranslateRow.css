@@ -24,8 +24,64 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: stretch;
-  font-weight: bold;
   grid-area: id;
+}
+
+.translate-id p {
+  font-weight: bold;
+}
+
+.main-action {
+  display: flex;
+  align-items: center;
+}
+
+.unchanged .main-action {
+  background-color: #ddd;
+  color: #bbb;
+}
+.todo .main-action {
+  background-color: #ccc;
+  color: #000;
+}
+.done .main-action {
+  background-color: #c2f0c2;
+  color: #28a428;
+}
+
+
+.main-action-button {
+  flex: 1;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.translate-id .actions {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  width: 100%;
+  background-color: #eee;
+  border: solid 1px black;
+  padding: 5px 0;
+}
+
+.actions > div {
+  height: 25px;
+  padding-left: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.actions > div:hover {
+  background-color: #ccc;
+}
+
+
+.center-vertically {
+  display: flex;
+  align-items: center;
 }
 
 .translate-original {

@@ -9,10 +9,15 @@ class TranslateRow extends Component {
 
     this.state = {
       originalView: 'new',
+      showExtraActions: false,
     }
 
     Object.assign(this.state, this.getFieldValues(props));
     Object.assign(this.state, this.getFieldStates(props));
+
+    this.resetTargetField = this.resetTargetField.bind(this);
+    this.changeOriginal = this.changeOriginal.bind(this);
+    this.setDone = this.setDone.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,10 +73,10 @@ class TranslateRow extends Component {
 
 
     if ( !fieldStates.new && !fieldStates.update
-            && !fieldStates.diff  && !this.state.missing) {
+            && !fieldStates.diff  && !fieldStates.missing) {
       fieldStates.unchanged = true;
     } else {
-        if ( false ) {
+        if ( props.isDone ) {
           fieldStates.done = true;
         } else {
           fieldStates.todo = true;
@@ -104,6 +109,9 @@ class TranslateRow extends Component {
     return (
       <div
           className={ classNames({
+            "unchanged": this.state.unchanged,
+            "todo": this.state.todo,
+            "done": this.state.done,
             "hidden": this.state.hidden,
             "update": this.state.update,
             "delete": this.state.delete,
@@ -136,7 +144,8 @@ class TranslateRow extends Component {
       <div className="translate-target" key={"div-"+id}>
         <textarea
             refid={id}
-            defaultValue={this.state.target}
+            value={this.state.target}
+            onChange={this.handleTextAreaChange.bind(this)}
             onBlur={this.handleTextAreaChange.bind(this)}
             key={"textarea-"+id}
             ></textarea>
@@ -175,33 +184,69 @@ class TranslateRow extends Component {
     return (
       <div className={"translate-original "+this.state.originalView}>
         <p>{originalText}</p>
-        {
-          this.state.update &&
-          <div className="change"
-            onClick={this.changeOriginal.bind(this)}></div>
-        }
       </div>
     );
   }
 
   getIdField() {
     let id = this.props.field;
+
+    let getButtonTitle = function(){
+      if(this.state.unchanged) {
+        return "Unchanged";
+      }
+      if(this.state.todo) {
+        return "To Do";
+      }
+      if(this.state.done) {
+        return "Done";
+      }
+    }.bind(this)
+
+    let extraActions = (
+      <div className={classNames({
+        "dropup": true,
+         "open": this.state.showExtraActions,
+      })}>
+        <div className={classNames({
+          "actions": true,
+          "hidden": !this.state.showExtraActions,
+        })}>
+          <div onClick={this.resetTargetField}>Reset</div>
+          <div onClick={this.changeOriginal}>Old/New</div>
+        </div>
+
+        <div className="main-action">
+          <span className="main-action-button center-vertically"
+                onClick={this.setDone}>
+            <input
+              disabled={this.state.unchanged}
+              checked={this.state.done}
+              onChange={this.setDone}
+              type="checkbox" style={{
+              margin: 0,
+            }} />
+            <label style={{
+              margin: 0,
+              paddingLeft: "10px",
+            }}>{getButtonTitle()}</label>
+          </span>
+          <button
+            style={{
+              "padding": "3px"
+            }}
+            tabIndex="-1"
+            onClick={(e)=>this.setState({showExtraActions: !this.state.showExtraActions})}
+            aria-label="Done" id="split-button-dropup" type="button" className="dropdown-toggle btn btn-default"> <span className="caret"></span></button>
+        </div>
+      </div>
+    );
+
     return (
       <div className="translate-id">
-      <p>{id}</p>
-      {/*
-      <div className="dropup open">
-        <span>
-          Done
-        </span>
-        <button
-          style={{
-            "padding": "3px"
-          }}
-          aria-label="Done" id="split-button-dropup" role="button" aria-haspopup="true" aria-expanded="true" type="button" class="dropdown-toggle btn btn-default"> <span class="caret"></span></button>
+        <p>{id}</p>
+        {extraActions}
       </div>
-      */}
-    </div>
   );
   }
 
@@ -212,14 +257,31 @@ class TranslateRow extends Component {
       newOriginal = "old";
     }
     this.setState({
-      original: newOriginal
+      originalView: newOriginal
     })
   }
 
-  handleTextAreaChange(event) {
-    let id = event.target.attributes["refid"].value;
-    let value = event.target.value;
+  setDone(event) {
+    event.stopPropagation();
+    
+    if ( this.state.unchanged ) {
+      return;
+    }
+    this.props.updateDone(this.props.field, !this.state.done);
+  }
 
+  resetTargetField() {
+    if ( this.props.baseTargetField && this.props.baseTargetField.message ) {
+      this.updateTargetField(this.props.baseTargetField.message);
+    } else {
+      this.updateTargetField("");
+    }
+    this.setState({
+      showExtraActions: false,
+    })
+  }
+
+  updateTargetField(value) {
     this.setState({
       target: value,
     }, () => {
@@ -230,7 +292,12 @@ class TranslateRow extends Component {
       );
     });
 
-    this.props.updateTranslation(id, value);
+    this.props.updateTranslation(this.props.field, value);
+  }
+
+  handleTextAreaChange(event) {
+    let value = event.target.value;
+    this.updateTargetField(value);
   }
 }
 

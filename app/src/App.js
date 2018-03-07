@@ -19,9 +19,14 @@ class App extends Component {
         , LanguageFiles.languageFileFactory());
     }
 
+    this.state.doneLog = LanguageFiles.loadData(
+      "doneLog"
+      , {});
+
     this.getTranslatePanel = this.getTranslatePanel.bind(this);
     this.getConfigurePanel = this.getConfigurePanel.bind(this);
     this.updateTranslation = this.updateTranslation.bind(this);
+    this.setDone = this.setDone.bind(this);
     this.loadApp = this.loadApp.bind(this);
     this.handleSetLanguageFile = this.handleSetLanguageFile.bind(this);
   }
@@ -62,7 +67,9 @@ class App extends Component {
     }
       return <TranslatePanel
                 languagesFiles={languagesFiles}
-                updateTranslation={this.updateTranslation}/>
+                updateTranslation={this.updateTranslation}
+                updateDone={this.setDone}
+                doneLog={this.state.doneLog}/>
   }
 
   getConfigurePanel(props) {
@@ -99,6 +106,25 @@ class App extends Component {
     }
     //this.forceUpdate();
     window.sessionStorage.headTargetLanguage = JSON.stringify(this.state.headTargetLanguage);
+  }
+
+  setDone(id, value) {
+    if ( value ) {
+      let nextDoneLog = Object.assign({}, this.state.doneLog);
+      nextDoneLog[id] = true;
+      this.setState({
+        doneLog: nextDoneLog,
+      });
+    } else {
+      if ( this.state.doneLog[id] ) {
+        let nextDoneLog = Object.assign({}, this.state.doneLog);
+        delete nextDoneLog[id];
+        this.setState({
+          doneLog: nextDoneLog,
+        });
+      }
+    }
+    window.sessionStorage.doneLog = JSON.stringify(this.state.doneLog);
   }
 
   downloadTranslatedFile(event) {

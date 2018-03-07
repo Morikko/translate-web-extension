@@ -54,14 +54,14 @@ class TranslateControls extends Component {
               <FormGroup style={{
                 "padding": "5px"
               }}>
-                  <Radio name="sortRadio"
+                  <Radio
                     checked={!this.props.sort}
                     onChange={this.props.onSortChange}
                     name="sort"
                     value="file">
                     File order
                   </Radio>
-                  <Radio name="sortRadio"
+                  <Radio
                     checked={this.props.sort}
                     onChange={this.props.onSortChange}
                     name="sort"

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import TranslateRow from './TranslateRow'
 import TranslateControls from './TranslateControls'
+import LanguageFiles from '../LanguageFiles'
 import Mark from 'mark.js'
 import './TranslatePanel.css'
 
@@ -8,15 +9,15 @@ class TranslatePanel extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      filter: '',
-      visible: {
-        unchanged: true,
-        todo: true,
-        done: false
-      },
-      sort: false,
-    }
+    this.state = {};
+
+    this.state["filter"] = LanguageFiles.loadData("filter", '');
+    this.state["visible"] = LanguageFiles.loadData("visible", {
+      unchanged: true,
+      todo: true,
+      done: false
+    });
+    this.state["sort"] = LanguageFiles.loadData("sort", false);
 
     this.markSearch = this.markSearch.bind(this);
     this.unMarkFilter = this.unMarkFilter.bind(this);
@@ -35,36 +36,17 @@ class TranslatePanel extends Component {
     let array = [];
 
     let fields = Object.keys(headSourceLanguage);
-    if(this.state.sort){
+    if (this.state.sort) {
       fields = fields.sort();
     }
 
     for (let field of fields) {
-      array.push(
-        <TranslateRow
-          visible={this.state.visible}
-          filter={this.state.filter}
-          field={field}
-          key={field}
-          headSourceField={headSourceLanguage[field]}
-          headTargetField={headTargetLanguage[field]}
-          baseSourceField={baseSourceLanguage[field]}
-          baseTargetField={baseTargetLanguage[field]}
-          updateTranslation={this.props.updateTranslation}
-        />
-        );
+      array.push(<TranslateRow visible={this.state.visible} filter={this.state.filter} field={field} key={field} headSourceField={headSourceLanguage[field]} headTargetField={headTargetLanguage[field]} baseSourceField={baseSourceLanguage[field]} baseTargetField={baseTargetLanguage[field]} updateTranslation={this.props.updateTranslation} updateDone={this.props.updateDone} isDone={this.props.doneLog[field]}/>);
     }
 
     return (<div id="translate-panel">
       <div id="translate-controls">
-        <TranslateControls
-          visible={this.state.visible}
-          sort={this.state.sort}
-          filter={this.state.filter}
-          onVisibleChange={this.onVisibleChange}
-          onSortChange={this.onSortChange}
-          onFilterChange={this.onFilterChange}
-        />
+        <TranslateControls visible={this.state.visible} sort={this.state.sort} filter={this.state.filter} onVisibleChange={this.onVisibleChange} onSortChange={this.onSortChange} onFilterChange={this.onFilterChange}/>
       </div>
       <div id="translate-header" className="translate-row">
         <div>id</div>
@@ -79,34 +61,26 @@ class TranslatePanel extends Component {
   }
 
   onVisibleChange(event) {
-    if ( this.state.visible[event.target.name] !== event.target.checked ) {
+    if (this.state.visible[event.target.name] !== event.target.checked) {
       let newVisible = Object.assign({}, this.state.visible);
       newVisible[event.target.name] = event.target.checked;
-      this.setState({
-        visible: newVisible
-      })
+      this.setState({visible: newVisible})
     }
   }
 
   onSortChange(event) {
-    if ( event.target.value === "file"
-      && this.state.sort ){
-        this.setState({
-          sort: false
-        });
-    } else if ( event.target.value === "alphabetical"
-      && !this.state.sort) {
-        this.setState({
-          sort: true
-        });
+    if (event.target.value === "file" && this.state.sort) {
+      this.setState({sort: false});
+    } else if (event.target.value === "alphabetical" && !this.state.sort) {
+      this.setState({sort: true});
     }
   }
 
   onFilterChange(event) {
     this.setState({
       filter: event.target.value
-    }, ()=>{
-      if ( this.state.filter.length ) {
+    }, () => {
+      if (this.state.filter.length) {
         this.markSearch();
       } else {
         this.unMarkFilter();
@@ -116,53 +90,44 @@ class TranslatePanel extends Component {
 
   unMarkFilter() {
     let base = ":not(.hidden) ";
-    let all = document.querySelectorAll(
-      base + ".translate-id > p" + ", " +
-      base + ".translate-original" + ", " +
-      base + ".translate-description" + ", " +
-      base + ".translate-target" + " "
-    );
+    let all = document.querySelectorAll(base + ".translate-id > p , " + base + ".translate-original , " + base + ".translate-description , " + base + ".translate-target ");
 
-    (new Mark(all)).unmark({
-      "element": "span",
-      "className": "highlight",
-    });
+    (new Mark(all)).unmark({"element": "span", "className": "highlight"});
   }
 
   markSearch() {
     let filter = this.state.filter;
     let base = ":not(.hidden) ";
-    let all = document.querySelectorAll(
-      base + ".translate-id > p" + ", " +
-      base + ".translate-original" + ", " +
-      base + ".translate-description" + ", " +
-      base + ".translate-target" + " "
-    );
+    let all = document.querySelectorAll(base + ".translate-id > p , " + base + ".translate-original , " + base + ".translate-description , " + base + ".translate-target");
 
     (new Mark(all)).unmark({
       "element": "span",
       "className": "highlight",
       done() {
-        if ( filter.length ) {
+        if (filter.length) {
           (new Mark(all)).mark(filter, {
             "element": "span",
-            "className": "highlight",
+            "className": "highlight"
           });
         }
-    }});
+      }
+    });
   }
 
-  componentDidMount(){
-    console.log("Translate mounted");
+  componentDidMount() {
+    // console.log("Translate mounted");
   }
 
-  componentWillUnmount(){
-    console.log("Translate unmounted");
+  componentWillUnmount() {
+    // console.log("Translate unmounted");
   }
 
-  componentDidUpdate(){
-    console.log("Translate updated");
+  componentDidUpdate(prevProps, prevState) {
+    sessionStorage.setItem("filter", JSON.stringify(this.state.filter));
+    sessionStorage.setItem("visible", JSON.stringify(this.state.visible));
+    sessionStorage.setItem("sort", JSON.stringify(this.state.sort));
   }
+
 }
 
 export default TranslatePanel;

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import classNames from 'classnames'
 import './TranslateRow.css'
-//import jsdiff from 'diff'
 var jsdiff = require('diff');
 
 class TranslateRow extends Component {
@@ -61,12 +60,6 @@ class TranslateRow extends Component {
         params.new = true;
     }
 
-    /* IMPOSSIBLE
-    if (!this.props.headSourceField && this.props.baseSourceField) {
-        params.delete = true;
-    }
-    */
-
     if ( !this.props.baseTargetField && this.props.headTargetField ) {
       params.diff = true;
     }
@@ -103,7 +96,21 @@ class TranslateRow extends Component {
         "diff": params.diff,
       }, "translate-row translate-field")
     }>
-      <div className="translate-id"><p>{id}</p></div>
+      <div className="translate-id">
+        <p>{id}</p>
+        {/*
+        <div className="dropup open">
+          <span>
+            Done
+          </span>
+          <button
+            style={{
+              "padding": "3px"
+            }}
+            aria-label="Done" id="split-button-dropup" role="button" aria-haspopup="true" aria-expanded="true" type="button" class="dropdown-toggle btn btn-default"> <span class="caret"></span></button>
+        </div>
+        */}
+      </div>
       <div className={"translate-original "+this.state.original}>
         <p>{params.original}</p>
         {
@@ -120,7 +127,10 @@ class TranslateRow extends Component {
             key={"textarea-"+id}
             ></textarea>
       </div>
-      <div className="translate-description">{params.description}</div>
+      <div className={classNames({
+        "translate-description": true,
+        "hidden": params.description.length===0
+      })}>{params.description}</div>
     </div>)
   }
 

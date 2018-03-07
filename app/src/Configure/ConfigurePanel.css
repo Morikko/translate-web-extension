@@ -6,6 +6,8 @@
   height: 100%;
   padding: 10px;
   box-sizing: border-box;
+  overflow: auto;
+  padding-bottom: 30px;
 }
 
 .tab-header {
@@ -35,6 +37,14 @@
   padding: 10px 0;
   text-align: center;
   text-decoration: none;
+}
+
+.file-section {
+  padding-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.6em;
 }
 
 #configure-content {

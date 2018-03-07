@@ -13,6 +13,9 @@ class AppNavBar extends Component {
       }}>
         <Navbar.Header>
           <Navbar.Toggle />
+          <Navbar.Brand>
+            Translate Web-Ext
+          </Navbar.Brand>
         </Navbar.Header>
         <Navbar.Collapse>
 
@@ -38,7 +41,7 @@ class AppNavBar extends Component {
               <MenuItem eventKey={3.2}
                 onClick={this.props.onReset}
                 style={{
-                  
+
                 }}>Reset</MenuItem>
               <MenuItem divider />
               <MenuItem eventKey={3.3}

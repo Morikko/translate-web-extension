@@ -1,6 +1,12 @@
 .translate-field{
   width: 100%;
 }
+@media screen and (min-width: 900px) {
+  .translate-field{
+    padding-bottom: 5px;
+  }
+}
+
 
 .translate-field > div{
   border: 1px solid #ccc;
@@ -15,7 +21,9 @@
 .translate-id {
   word-break: break-all;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
   font-weight: bold;
   grid-area: id;
 }
@@ -36,19 +44,16 @@
 }
 
 .new .translate-original {
-  border: 2px solid blue;
+  box-shadow: 0 0 3px 0px blue;
 }
 .update .translate-original {
-  border: 2px solid yellow;
-}
-.delete .translate-original {
-  border: 2px solid red;
+  box-shadow: 0 0 2px 1px yellow;
 }
 .done .translate-original {
-  border: 1px solid green;
+  box-shadow: 0 0 3px 0px green;
 }
 .diff .translate-target {
-  border: 2px solid yellow;
+  box-shadow: 0 0 2px 1px yellow;
 }
 
 .translate-target textarea{

@@ -1,8 +1,26 @@
 import React, {Component} from 'react';
 import TranslateRow from './TranslateRow'
+import TranslateControls from './TranslateControls'
 import './TranslatePanel.css'
 
 class TranslatePanel extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      filter: '',
+      visible: {
+        unchanged: true,
+        todo: true,
+        done: false
+      },
+      sort: false,
+    }
+
+    this.onVisibleChange = this.onVisibleChange.bind(this);
+    this.onSortChange = this.onSortChange.bind(this);
+    this.onFilterChange = this.onFilterChange.bind(this);
+  }
 
   render() {
     let headSourceLanguage = this.props.languagesFiles["headSourceLanguage"];
@@ -15,6 +33,9 @@ class TranslatePanel extends Component {
     for (let field in headSourceLanguage) {
       array.push(
         <TranslateRow
+          visible={this.state.visible}
+          sort={this.state.sort}
+          filter={this.state.filter}
           field={field}
           key={field}
           headSourceField={headSourceLanguage[field]}
@@ -28,7 +49,14 @@ class TranslatePanel extends Component {
 
     return (<div id="translate-panel">
       <div id="translate-controls">
-        Controls
+        <TranslateControls
+          visible={this.state.visible}
+          sort={this.state.sort}
+          filter={this.state.filter}
+          onVisibleChange={this.onVisibleChange}
+          onSortChange={this.onSortChange}
+          onFilterChange={this.onFilterChange}
+        />
       </div>
       <div id="translate-header" className="translate-row">
         <div>id</div>
@@ -40,6 +68,36 @@ class TranslatePanel extends Component {
         {array}
       </div>
     </div>);
+  }
+
+  onVisibleChange(event) {
+    if ( this.state.visible[event.target.name] !== event.target.checked ) {
+      let newVisible = Object.assign({}, this.state.visible);
+      newVisible[event.target.name] = event.target.checked;
+      this.setState({
+        visible: newVisible
+      })
+    }
+  }
+
+  onSortChange(event) {
+    if ( event.target.value === "file"
+      && this.state.sort ){
+        this.setState({
+          sort: false
+        });
+    } else if ( event.target.value === "alphabetical"
+      && !this.state.sort) {
+        this.setState({
+          sort: true
+        });
+    }
+  }
+
+  onFilterChange(event) {
+    this.setState({
+      filter: event.target.value
+    });
   }
 
   componentDidMount(){

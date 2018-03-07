@@ -25,6 +25,7 @@ class ConfigureFileSection extends Component {
      gitSection = (<span className="git-section">
        <input type="text" className="input-git-url"
          value={this.state.url}
+         placeholder="Locales file URL..."
          onBlur={this.onChangeURL.bind(this)}
          onInput={this.onChangeURL.bind(this)}/>
        <input type="button" value="Fetch" onClick={this.onURLFetch.bind(this)}/>

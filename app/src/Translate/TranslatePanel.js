@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import TranslateRow from './TranslateRow'
 import TranslateControls from './TranslateControls'
+import Mark from 'mark.js'
 import './TranslatePanel.css'
 
 class TranslatePanel extends Component {
@@ -17,6 +18,9 @@ class TranslatePanel extends Component {
       sort: false,
     }
 
+    this.markSearch = this.markSearch.bind(this);
+    this.unMarkFilter = this.unMarkFilter.bind(this);
+
     this.onVisibleChange = this.onVisibleChange.bind(this);
     this.onSortChange = this.onSortChange.bind(this);
     this.onFilterChange = this.onFilterChange.bind(this);
@@ -30,11 +34,15 @@ class TranslatePanel extends Component {
 
     let array = [];
 
-    for (let field in headSourceLanguage) {
+    let fields = Object.keys(headSourceLanguage);
+    if(this.state.sort){
+      fields = fields.sort();
+    }
+
+    for (let field of fields) {
       array.push(
         <TranslateRow
           visible={this.state.visible}
-          sort={this.state.sort}
           filter={this.state.filter}
           field={field}
           key={field}
@@ -97,7 +105,51 @@ class TranslatePanel extends Component {
   onFilterChange(event) {
     this.setState({
       filter: event.target.value
+    }, ()=>{
+      if ( this.state.filter.length ) {
+        this.markSearch();
+      } else {
+        this.unMarkFilter();
+      }
     });
+  }
+
+  unMarkFilter() {
+    let base = ":not(.hidden) ";
+    let all = document.querySelectorAll(
+      base + ".translate-id > p" + ", " +
+      base + ".translate-original" + ", " +
+      base + ".translate-description" + ", " +
+      base + ".translate-target" + " "
+    );
+
+    (new Mark(all)).unmark({
+      "element": "span",
+      "className": "highlight",
+    });
+  }
+
+  markSearch() {
+    let filter = this.state.filter;
+    let base = ":not(.hidden) ";
+    let all = document.querySelectorAll(
+      base + ".translate-id > p" + ", " +
+      base + ".translate-original" + ", " +
+      base + ".translate-description" + ", " +
+      base + ".translate-target" + " "
+    );
+
+    (new Mark(all)).unmark({
+      "element": "span",
+      "className": "highlight",
+      done() {
+        if ( filter.length ) {
+          (new Mark(all)).mark(filter, {
+            "element": "span",
+            "className": "highlight",
+          });
+        }
+    }});
   }
 
   componentDidMount(){

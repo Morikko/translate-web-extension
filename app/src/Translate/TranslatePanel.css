@@ -42,7 +42,11 @@
   }
 
   #translate-panel {
-    grid-template-rows: auto 40px 1fr;
+    grid-template-rows: auto 0px 1fr;
+  }
+
+  #translate-header {
+    visibility: hidden;
   }
 }
 

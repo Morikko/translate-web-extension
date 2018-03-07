@@ -43,17 +43,26 @@
   grid-area: target;
 }
 
+.highlight {
+  background-color: orange;
+}
+
 .new .translate-original {
   box-shadow: 0 0 3px 0px blue;
 }
 .update .translate-original {
   box-shadow: 0 0 2px 1px yellow;
 }
-.done .translate-original {
-  box-shadow: 0 0 3px 0px green;
-}
+
 .diff .translate-target {
   box-shadow: 0 0 2px 1px yellow;
+}
+.missing .translate-target {
+  box-shadow: 0 0 3px 0px red;
+}
+
+.done .translate-original,  .done .translate-target{
+  box-shadow: 0 0 3px 0px green;
 }
 
 .translate-target textarea{

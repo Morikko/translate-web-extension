@@ -5,6 +5,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "diff": "^3.5.0",
+    "mark.js": "^8.11.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.2.0",

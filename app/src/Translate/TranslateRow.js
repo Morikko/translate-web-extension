@@ -8,27 +8,148 @@ class TranslateRow extends Component {
     super(props);
 
     this.state = {
-      original: 'new',
+      originalView: 'new',
+    }
+
+    Object.assign(this.state, this.getFieldValues(props));
+    Object.assign(this.state, this.getFieldStates(props));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let nextState = Object.assign({}, this.state);
+
+    Object.assign(nextState, this.getFieldValues(nextProps));
+    Object.assign(nextState, this.getFieldStates(nextProps));
+
+    this.setState(nextState);
+  }
+
+  getFieldValues(props) {
+    return  {
+      original: props.headSourceField.message,
+      target: (props.headTargetField && props.headTargetField.message)  ||"",
+      description: props.headSourceField.description||"",
     }
   }
 
-  render() {
-    let params = {
-      original: "",
-      target: "",
-      description: "",
+  getFieldStates(props){
+    let fieldStates = {
       new: false,
-      delete: false,
       update: false,
       diff: false,
-    };
+      todo: false,
+      unchanged: false,
+      missing: false,
+      done: false,
+      hidden: true,
+    }
+
+    if (props.headSourceField && !props.baseSourceField
+      && !props.baseTargetField) {
+        fieldStates.new = true;
+    }
+
+    if ( !props.baseTargetField && props.headTargetField ) {
+      fieldStates.diff = true;
+    }
+    if (props.baseTargetField && props.headTargetField && this.state.target !== props.baseTargetField.message) {
+      fieldStates.diff = true;
+    }
+
+    if ( this.state.target.length===0 ) {
+      fieldStates.missing = true;
+    }
+
+    if (props.headSourceField &&
+        props.baseSourceField
+        && props.headSourceField.message !== props.baseSourceField.message) {
+        fieldStates.update = true;
+    }
 
 
-    if (this.props.headSourceField) {
-      if ( !this.props.baseSourceField) {
-        params.original = this.props.headSourceField.message;
-      } else {
-        params.original = (
+    if ( !fieldStates.new && !fieldStates.update
+            && !fieldStates.diff  && !this.state.missing) {
+      fieldStates.unchanged = true;
+    } else {
+        if ( false ) {
+          fieldStates.done = true;
+        } else {
+          fieldStates.todo = true;
+        }
+    }
+
+    if ( (fieldStates.unchanged && props.visible.unchanged)
+          || (fieldStates.todo && props.visible.todo)
+          || (fieldStates.done && props.visible.done) ) {
+      fieldStates.hidden = false;
+    }
+
+    if ( props.filter.length ) {
+      if ( this.isPartOfFilter(props) ) {
+        fieldStates.hidden = true;
+      }
+    }
+
+    return fieldStates;
+  }
+
+  isPartOfFilter(props) {
+    return ( !props.field.includes(props.filter)
+                && !this.state.original.includes(props.filter)
+                && !this.state.target.includes(props.filter)
+                && !this.state.description.includes(props.filter));
+  }
+
+  render() {
+    return (
+      <div
+          className={ classNames({
+            "hidden": this.state.hidden,
+            "update": this.state.update,
+            "delete": this.state.delete,
+            "new": this.state.new,
+            "diff": this.state.diff,
+            "missing": this.state.missing,
+          }, "translate-row translate-field")}>
+        {this.getIdField()}
+        {this.getOriginalField()}
+        {this.getTargetField()}
+        {this.getDescriptionField()}
+      </div>
+    );
+  }
+
+  getDescriptionField() {
+    return (
+      <div className={classNames({
+        "translate-description": true,
+        "hidden": this.state.description.length===0
+      })}>
+      {this.state.description}
+      </div>
+    );
+  }
+
+  getTargetField() {
+    let id = this.props.field;
+    return (
+      <div className="translate-target" key={"div-"+id}>
+        <textarea
+            refid={id}
+            defaultValue={this.state.target}
+            onBlur={this.handleTextAreaChange.bind(this)}
+            key={"textarea-"+id}
+            ></textarea>
+      </div>
+    );
+  }
+
+  getOriginalField() {
+
+    let originalText;
+
+    if ( this.state.update ) {
+      originalText = (
           <span>
           {
             jsdiff.diffWords(
@@ -45,98 +166,49 @@ class TranslateRow extends Component {
                 );
               })
           }
-        </span>)
-      }
-
-      params.description = this.props.headSourceField.description;
+        </span>
+      );
+    } else {
+      originalText = this.props.headSourceField.message;
     }
 
-    if (this.props.headTargetField) {
-      params.target = this.props.headTargetField.message;
-    }
-
-    if (this.props.headSourceField && !this.props.baseSourceField
-      && !this.props.baseTargetField) {
-        params.new = true;
-    }
-
-    if ( !this.props.baseTargetField && this.props.headTargetField ) {
-      params.diff = true;
-    }
-    if (this.props.baseTargetField && this.props.headTargetField && this.props.headTargetField.message !== this.props.baseTargetField.message) {
-      params.diff = true;
-    }
-
-    if (this.props.headSourceField &&
-        this.props.baseSourceField
-        && this.props.headSourceField.message !== this.props.baseSourceField.message) {
-        params.update = true;
-    }
-
-    return this.rowFactory(this.props.field, params);
-  }
-
-  rowFactory(id, params = {}) {
-    params = Object.assign({
-      original: "",
-      target: "",
-      description: "",
-      new: false,
-      delete: false,
-      update: false,
-      diff: false
-    }, params);
-
-    return (<div className={
-      classNames({
-        "hidden": !params.update && !params.new && !params.diff,
-        "update": params.update,
-        "delete": params.delete,
-        "new": params.new,
-        "diff": params.diff,
-      }, "translate-row translate-field")
-    }>
-      <div className="translate-id">
-        <p>{id}</p>
-        {/*
-        <div className="dropup open">
-          <span>
-            Done
-          </span>
-          <button
-            style={{
-              "padding": "3px"
-            }}
-            aria-label="Done" id="split-button-dropup" role="button" aria-haspopup="true" aria-expanded="true" type="button" class="dropdown-toggle btn btn-default"> <span class="caret"></span></button>
-        </div>
-        */}
-      </div>
-      <div className={"translate-original "+this.state.original}>
-        <p>{params.original}</p>
+    return (
+      <div className={"translate-original "+this.state.originalView}>
+        <p>{originalText}</p>
         {
-          params.update &&
+          this.state.update &&
           <div className="change"
             onClick={this.changeOriginal.bind(this)}></div>
         }
       </div>
-      <div className="translate-target" key={"div-"+id}>
-        <textarea
-            refid={id}
-            defaultValue={params.target}
-            onBlur={this.handleTextAreaChange.bind(this)}
-            key={"textarea-"+id}
-            ></textarea>
-      </div>
-      <div className={classNames({
-        "translate-description": true,
-        "hidden": params.description.length===0
-      })}>{params.description}</div>
-    </div>)
+    );
   }
+
+  getIdField() {
+    let id = this.props.field;
+    return (
+      <div className="translate-id">
+      <p>{id}</p>
+      {/*
+      <div className="dropup open">
+        <span>
+          Done
+        </span>
+        <button
+          style={{
+            "padding": "3px"
+          }}
+          aria-label="Done" id="split-button-dropup" role="button" aria-haspopup="true" aria-expanded="true" type="button" class="dropdown-toggle btn btn-default"> <span class="caret"></span></button>
+      </div>
+      */}
+    </div>
+  );
+  }
+
 
   changeOriginal(event) {
     let newOriginal = "new";
-    if ( this.state.original === "new" ) {
+    if ( this.state.originalView === "new" ) {
       newOriginal = "old";
     }
     this.setState({
@@ -148,7 +220,15 @@ class TranslateRow extends Component {
     let id = event.target.attributes["refid"].value;
     let value = event.target.value;
 
-    this.forceUpdate();
+    this.setState({
+      target: value,
+    }, () => {
+      this.setState(
+        Object.assign(
+          Object.assign({}, this.state)
+          , this.getFieldStates(this.props))
+      );
+    });
 
     this.props.updateTranslation(id, value);
   }

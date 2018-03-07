@@ -44,7 +44,8 @@ class TranslateControls extends Component {
                 <Checkbox
                   checked={this.props.visible.done}
                   onChange={this.props.onVisibleChange}
-                  name="done">
+                  name="done"
+                  value="">
                   Done
                 </Checkbox>
               </FormGroup>

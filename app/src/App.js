@@ -93,6 +93,10 @@ class App extends Component {
       [id]: file,
     });
     window.sessionStorage[id] = JSON.stringify(file);
+
+    if ( id === "baseTargetLanguage") {
+      this.handleSetLanguageFile("headTargetLanguage", source, content)
+    }
   }
 
   updateTranslation(id, value) {
@@ -109,22 +113,20 @@ class App extends Component {
   }
 
   setDone(id, value) {
+    let nextDoneLog = Object.assign({}, this.state.doneLog);
     if ( value ) {
-      let nextDoneLog = Object.assign({}, this.state.doneLog);
       nextDoneLog[id] = true;
-      this.setState({
-        doneLog: nextDoneLog,
-      });
+
     } else {
       if ( this.state.doneLog[id] ) {
-        let nextDoneLog = Object.assign({}, this.state.doneLog);
         delete nextDoneLog[id];
-        this.setState({
-          doneLog: nextDoneLog,
-        });
       }
     }
-    window.sessionStorage.doneLog = JSON.stringify(this.state.doneLog);
+    this.setState({
+      doneLog: nextDoneLog,
+    }, ()=>{
+      window.sessionStorage.doneLog = JSON.stringify(this.state.doneLog)
+    });
   }
 
   downloadTranslatedFile(event) {

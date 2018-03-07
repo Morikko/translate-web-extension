@@ -11,6 +11,9 @@ class ConfigurePanel extends Component {
     let configureFileArray = [];
 
     for (let p in LanguageFiles.Information) {
+      if ( p === "headTargetLanguage" ) {
+        continue;
+      }
       configureFileArray.push(
         <ConfigureFileSection
           title={LanguageFiles.Information[p].title}

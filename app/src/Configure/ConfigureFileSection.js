@@ -97,12 +97,10 @@ class ConfigureFileSection extends Component {
 
       fetch(url,{ method: 'GET', mode: 'cors'})
         .then((response)=>{
-          console.log(response)
           return response.json()
           })
         .then((content)=>{
           this.props.setLanguageFile(this.props.id, this.state.url, content);
-          console.log(content);
         });
     }
   }

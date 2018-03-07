@@ -40,9 +40,14 @@ class TranslatePanel extends Component {
       fields = fields.sort();
     }
 
-    for (let field of fields) {
-      array.push(<TranslateRow visible={this.state.visible} filter={this.state.filter} field={field} key={field} headSourceField={headSourceLanguage[field]} headTargetField={headTargetLanguage[field]} baseSourceField={baseSourceLanguage[field]} baseTargetField={baseTargetLanguage[field]} updateTranslation={this.props.updateTranslation} updateDone={this.props.updateDone} isDone={this.props.doneLog[field]}/>);
-    }
+    array = fields.map((field, index)=>{
+      return(<TranslateRow
+        visible={this.state.visible}
+        filter={this.state.filter}
+        field={field} key={field}
+        index={index*2}
+         headSourceField={headSourceLanguage[field]} headTargetField={headTargetLanguage[field]} baseSourceField={baseSourceLanguage[field]} baseTargetField={baseTargetLanguage[field]} updateTranslation={this.props.updateTranslation} updateDone={this.props.updateDone} isDone={this.props.doneLog[field]}/>);
+    });
 
     return (<div id="translate-panel">
       <div id="translate-controls">

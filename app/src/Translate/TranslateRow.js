@@ -54,7 +54,7 @@ class TranslateRow extends Component {
         fieldStates.new = true;
     }
 
-    if ( !props.baseTargetField && props.headTargetField ) {
+    if ( !props.baseTargetField && this.state.target.length ) {
       fieldStates.diff = true;
     }
     if (props.baseTargetField && props.headTargetField && this.state.target !== props.baseTargetField.message) {
@@ -78,8 +78,10 @@ class TranslateRow extends Component {
     } else {
         if ( props.isDone ) {
           fieldStates.done = true;
+          fieldStates.todo = false;
         } else {
           fieldStates.todo = true;
+          fieldStates.done = false;
         }
     }
 
@@ -148,6 +150,7 @@ class TranslateRow extends Component {
             onChange={this.handleTextAreaChange.bind(this)}
             onBlur={this.handleTextAreaChange.bind(this)}
             key={"textarea-"+id}
+            tabIndex={this.props.index}
             ></textarea>
       </div>
     );
@@ -212,17 +215,25 @@ class TranslateRow extends Component {
           "actions": true,
           "hidden": !this.state.showExtraActions,
         })}>
-          <div onClick={this.resetTargetField}>Reset</div>
-          <div onClick={this.changeOriginal}>Old/New</div>
+          {
+            this.state.diff
+              && <div onClick={this.resetTargetField}>Reset</div>
+          }
+          {
+            this.state.update
+              && <div onClick={this.changeOriginal}>Old/New</div>
+          }
         </div>
 
-        <div className="main-action">
+        <div className="main-action"
+            >
           <span className="main-action-button center-vertically"
-                onClick={this.setDone}>
+              onClick={this.setDone}  >
             <input
               disabled={this.state.unchanged}
               checked={this.state.done}
-              onChange={this.setDone}
+              onChange={()=>null}
+              tabIndex={this.props.index+1}
               type="checkbox" style={{
               margin: 0,
             }} />
@@ -232,9 +243,7 @@ class TranslateRow extends Component {
             }}>{getButtonTitle()}</label>
           </span>
           <button
-            style={{
-              "padding": "3px"
-            }}
+            disabled={!this.state.diff && !this.state.update}
             tabIndex="-1"
             onClick={(e)=>this.setState({showExtraActions: !this.state.showExtraActions})}
             aria-label="Done" id="split-button-dropup" type="button" className="dropdown-toggle btn btn-default"> <span className="caret"></span></button>
@@ -263,7 +272,7 @@ class TranslateRow extends Component {
 
   setDone(event) {
     event.stopPropagation();
-    
+
     if ( this.state.unchanged ) {
       return;
     }

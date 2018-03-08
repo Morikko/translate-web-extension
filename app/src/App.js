@@ -23,6 +23,8 @@ class App extends Component {
       "doneLog"
       , {});
 
+    this.loadJSONfromURL();
+
     this.getTranslatePanel = this.getTranslatePanel.bind(this);
     this.getConfigurePanel = this.getConfigurePanel.bind(this);
     this.updateTranslation = this.updateTranslation.bind(this);
@@ -85,14 +87,20 @@ class App extends Component {
   }
 
   handleSetLanguageFile(id, source, content) {
+    if(LanguageFiles.ids.indexOf(id) === -1) {
+      return;
+    }
+
     let file = {
       source,
       content,
     }
     this.setState({
       [id]: file,
+      doneLog: {},
     });
     window.sessionStorage[id] = JSON.stringify(file);
+    window.sessionStorage.removeItem("doneLog");
 
     if ( id === "baseTargetLanguage") {
       this.handleSetLanguageFile("headTargetLanguage", source, content)
@@ -150,6 +158,8 @@ class App extends Component {
         newState[file] = LanguageFiles.languageFileFactory();
         window.sessionStorage.removeItem(file);
       })
+      newState["doneLog"] = {};
+      window.sessionStorage.removeItem("doneLog");
       this.setState(newState);
     }
 
@@ -184,6 +194,50 @@ class App extends Component {
     } else {
       console.log("Wrong JSON file: It is not a project.")
     }
+  }
+
+  loadJSONfromURL(){
+    let values = [
+      {
+        paramName: 'baseoriginal',
+        id: "baseSourceLanguage"
+      },
+      {
+        paramName: 'headoriginal',
+        id: "headSourceLanguage"
+      },
+      {
+        paramName: 'basetarget',
+        id: "baseTargetLanguage"
+      },
+    ];
+
+    for (let p of values ) {
+      let param = this.getParameterByName(p.paramName);
+      if (param.length) {
+        LanguageFiles.loadUrl(param, (content)=>{
+          this.handleSetLanguageFile(p.id, param, content);
+        });
+      }
+    }
+
+    if(window.location.search.length){
+      window.history.pushState(
+        "object or string",
+        "Translate Web App",
+        window.location.origin + window.location.pathname);
+    }
+
+  }
+
+  getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+    if (!results) return '';
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
   }
 }
 

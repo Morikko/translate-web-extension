@@ -40,4 +40,23 @@ export default class LanguageFiles {
       }
     }
 
+    static loadUrl(url, callback) {
+      if ( url.endsWith(".json")) {
+
+        if(url.startsWith("https://github.com")) {
+          url = url
+                .replace("https://github.com", "https://raw.githubusercontent.com")
+                .replace("blob/", "");
+        }
+
+        fetch(url,{ method: 'GET', mode: 'cors'})
+          .then((response)=>{
+            return response.json()
+            })
+          .then((content)=>{
+            callback(content);
+          });
+      }
+    }
+
 }

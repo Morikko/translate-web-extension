@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import OptionSelect from './OptionSelect';
 import ButtonFile from './ButtonFile';
+import LanguageFiles from '../LanguageFiles'
 import './ConfigureFileSection.css';
 
 
@@ -92,28 +93,13 @@ class ConfigureFileSection extends Component {
   }
 
   onFileChange(content) {
-    console.log(content);
-
     this.props.setLanguageFile(this.props.id, "File", content);
   }
 
   onURLFetch(event) {
-    console.log(this.state.url);
-
-    if ( this.state.url.startsWith("https://github.com")
-          && this.state.url.endsWith(".json")) {
-      let url = this.state.url
-            .replace("https://github.com", "https://raw.githubusercontent.com")
-            .replace("blob/", "");
-
-      fetch(url,{ method: 'GET', mode: 'cors'})
-        .then((response)=>{
-          return response.json()
-          })
-        .then((content)=>{
-          this.props.setLanguageFile(this.props.id, this.state.url, content);
-        });
-    }
+    LanguageFiles.loadUrl(this.state.url, (content)=>{
+      this.props.setLanguageFile(this.props.id, this.state.url, content);
+    });
   }
 }
 

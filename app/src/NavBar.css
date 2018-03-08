@@ -9,3 +9,7 @@
   color: #fff;
   background-color: transparent;
 }
+
+.menu-selected {
+  color: #fff !important;
+}

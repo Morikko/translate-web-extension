@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {Navbar, Nav, MenuItem, NavDropdown} from 'react-bootstrap'
 import './NavBar.css'
 
@@ -20,19 +20,24 @@ class AppNavBar extends Component {
         <Navbar.Collapse>
 
             <Navbar.Text >
-              <Link to={`${this.props.match.url}/help`}>
+              <NavLink to={`${this.props.match.url}/help`}
+                        activeClassName="menu-selected">
                   Help
-              </Link>
+              </NavLink>
             </Navbar.Text>
 
             <Navbar.Text >
-              <Link
-                  to={`${this.props.match.url}/configure`}>Configure</Link>
+              <NavLink
+                  to={`${this.props.match.url}/configure`}
+                  activeClassName="menu-selected">
+                  Configure</NavLink>
             </Navbar.Text>
 
             <Navbar.Text  >
-              <Link
-                  to={`${this.props.match.url}/translate`}>Translate</Link>
+              <NavLink
+                  to={`${this.props.match.url}/translate`}
+                  activeClassName="menu-selected">
+                  Translate</NavLink>
             </Navbar.Text>
           <Nav>
             <NavDropdown eventKey={3} title="Project" id="basic-nav-dropdown">

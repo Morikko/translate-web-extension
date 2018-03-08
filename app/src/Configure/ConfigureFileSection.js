@@ -28,7 +28,11 @@ class ConfigureFileSection extends Component {
          placeholder="Locales file URL..."
          onBlur={this.onChangeURL.bind(this)}
          onInput={this.onChangeURL.bind(this)}/>
-       <input type="button" value="Fetch" onClick={this.onURLFetch.bind(this)}/>
+       <input
+          type="button"
+          className="fetch-button"
+          value="Fetch"
+          onClick={this.onURLFetch.bind(this)}/>
      </span>);
 
     let typeSection;
@@ -40,12 +44,19 @@ class ConfigureFileSection extends Component {
         typeSection = fileSection;
     }
 
+    let current;
+    if (this.props.current.includes('https://') ){
+      current = (<a href={this.props.current}>{this.props.current}</a>);
+    } else {
+      current = this.props.current;
+    }
+
     return (
       <div className="file-section">
         <h2>{this.props.title}</h2>
         {this.props.optional && "[Optional]"}
         <div>
-          {"Current: " + this.props.current}
+          <span>Current: {current}</span>
         </div>
 
         <div>

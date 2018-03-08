@@ -65,9 +65,12 @@
   left: 0;
   bottom: 100%;
   width: 100%;
-  background-color: #eee;
-  border: solid 1px black;
+  background-color: #fff;
+  border: solid 1px #bbb;
+  border-bottom: none;
   padding: 5px 0;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .actions > div {

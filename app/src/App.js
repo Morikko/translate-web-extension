@@ -143,12 +143,16 @@ class App extends Component {
   }
 
   reset(event) {
-    let newState = {};
-    LanguageFiles.ids.forEach((file)=>{
-      newState[file] = LanguageFiles.languageFileFactory();
-      window.sessionStorage.removeItem(file);
-    })
-    this.setState(newState);
+
+    if( window.confirm("Do you want to reset the project ?") ) {
+      let newState = {};
+      LanguageFiles.ids.forEach((file)=>{
+        newState[file] = LanguageFiles.languageFileFactory();
+        window.sessionStorage.removeItem(file);
+      })
+      this.setState(newState);
+    }
+
   }
 
   exportApp(event) {

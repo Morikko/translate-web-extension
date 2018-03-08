@@ -6,6 +6,7 @@
 
 .button-file {
   background-color: #bbb;
+  color: #000;
 }
 
 .git-section {
@@ -17,4 +18,19 @@
   max-width: 600px;
   min-width: 200px;
   flex:1;
+}
+
+.fetch-button {
+  background-color: #bbb;
+  border: none;
+  width: 70px;
+  position: relative;
+  left: -3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.fetch-button:hover, .button-file:hover {
+  background-color: #aaa;
+  color: #fff;
 }

@@ -217,7 +217,8 @@ class TranslateRow extends Component {
         })}>
           {
             this.state.diff
-              && <div onClick={this.resetTargetField}>Reset</div>
+              && <div onClick={this.resetTargetField}
+                      className="reset-field">Reset</div>
           }
           {
             this.state.update

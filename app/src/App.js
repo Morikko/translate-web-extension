@@ -110,8 +110,10 @@ class App extends Component {
   updateTranslation(id, value) {
     if ( value.length ) {
       if ( !this.state.headTargetLanguage.content[id] ) {
+        // eslint-disable-next-line
         this.state.headTargetLanguage.content[id] = {...this.state.headSourceLanguage.content[id]};
       }
+      // eslint-disable-next-line
       this.state.headTargetLanguage.content[id].message = value;
     } else {
       delete this.state.headTargetLanguage.content[id];
@@ -232,6 +234,7 @@ class App extends Component {
 
   getParameterByName(name, url) {
     if (!url) url = window.location.href;
+    // eslint-disable-next-line
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
       results = regex.exec(url);

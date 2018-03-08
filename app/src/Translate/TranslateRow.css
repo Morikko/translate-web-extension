@@ -85,6 +85,10 @@
   background-color: #ccc;
 }
 
+.reset-field:hover{
+  background-color: #ff8080 !important;
+}
+
 
 .center-vertically {
   display: flex;

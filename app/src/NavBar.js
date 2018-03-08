@@ -45,9 +45,7 @@ class AppNavBar extends Component {
                 onClick={this.props.onSave}>Save</MenuItem>
               <MenuItem eventKey={3.2}
                 onClick={this.props.onReset}
-                style={{
-
-                }}>Reset</MenuItem>
+                className="reset-project">Reset</MenuItem>
               <MenuItem divider />
               <MenuItem eventKey={3.3}
                 onClick={this.props.onRelease}>Release</MenuItem>

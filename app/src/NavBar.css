@@ -6,10 +6,18 @@
 }
 
 .navbar a:hover {
-  color: #fff;
+  color: #ffc266;
   background-color: transparent;
 }
 
 .menu-selected {
-  color: #fff !important;
+  color: #ff9900 !important;
+}
+
+.reset-project > a:hover {
+  background-color: #ffcccc !important;
+}
+
+.navbar-brand {
+  color: #ff9900 !important;
 }

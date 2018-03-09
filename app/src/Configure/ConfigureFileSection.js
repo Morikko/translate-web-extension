@@ -11,6 +11,7 @@ class ConfigureFileSection extends Component {
     this.state = {
       type: ConfigureFileSection.TYPE.GIT,
       url: "",
+      error: "",
     };
   }
 
@@ -52,6 +53,15 @@ class ConfigureFileSection extends Component {
       current = this.props.current;
     }
 
+    let errorField;
+    if ( this.state.error.length ) {
+      errorField = (
+        <div>
+          Error: {this.state.error}
+        </div>
+      )
+    }
+
     return (
       <div className="file-section">
         <h2>{this.props.title}</h2>
@@ -74,8 +84,8 @@ class ConfigureFileSection extends Component {
            <div>
              {typeSection}
            </div>
-
         </div>
+      {errorField}
       </div>
     );
   }
@@ -97,9 +107,16 @@ class ConfigureFileSection extends Component {
   }
 
   onURLFetch(event) {
-    LanguageFiles.loadUrl(this.state.url, (content)=>{
-      this.props.setLanguageFile(this.props.id, this.state.url, content);
-    });
+    LanguageFiles.loadUrl(
+      this.state.url
+      , (content)=>{
+        this.setState({error: ""});
+        this.props.setLanguageFile(this.props.id, this.state.url, content);
+      }
+      , (error) => {
+        this.setState({error: error});
+      }
+    );
   }
 }
 

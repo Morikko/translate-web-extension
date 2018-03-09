@@ -15,7 +15,7 @@ class TranslatePanel extends Component {
     this.state["visible"] = LanguageFiles.loadData("visible", {
       unchanged: true,
       todo: true,
-      done: false
+      done: false,
     });
     this.state["sort"] = LanguageFiles.loadData("sort", false);
 
@@ -82,15 +82,20 @@ class TranslatePanel extends Component {
   }
 
   onFilterChange(event) {
-    this.setState({
-      filter: event.target.value
-    }, () => {
-      if (this.state.filter.length) {
-        this.markSearch();
-      } else {
-        this.unMarkFilter();
-      }
-    });
+    let filterValue = event.target.value;
+    if (this.filterTimeOut) {
+      clearTimeout(this.filterTimeOut);
+    }
+    this.filterTimeOut = setTimeout(
+      ()=>{
+        this.setState({
+          filter: filterValue,
+          hasFilterChanged: true,
+        });
+        if (this.filterTimeOut) {
+          clearTimeout(this.filterTimeOut);
+        };
+    }, 200);
   }
 
   unMarkFilter() {
@@ -121,13 +126,33 @@ class TranslatePanel extends Component {
 
   componentDidMount() {
     // console.log("Translate mounted");
+    if (this.state.filter.length) {
+      this.markSearch();
+    } else {
+      this.unMarkFilter();
+    }
   }
 
   componentWillUnmount() {
     // console.log("Translate unmounted");
+    if (this.filterTimeOut) {
+      clearTimeout(this.filterTimeOut);
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if ( this.state.hasFilterChanged ) {
+      this.setState({
+        hasFilterChanged: false
+      }, ()=>{
+        if (this.state.filter.length) {
+          this.markSearch();
+        } else {
+          this.unMarkFilter();
+        }
+      });
+    }
+
     sessionStorage.setItem("filter", JSON.stringify(this.state.filter));
     sessionStorage.setItem("visible", JSON.stringify(this.state.visible));
     sessionStorage.setItem("sort", JSON.stringify(this.state.sort));

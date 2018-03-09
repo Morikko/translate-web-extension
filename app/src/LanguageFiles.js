@@ -40,7 +40,7 @@ export default class LanguageFiles {
       }
     }
 
-    static loadUrl(url, callback) {
+    static loadUrl(url, callback, onError=undefined) {
       if ( url.endsWith(".json")) {
 
         if(url.startsWith("https://github.com")) {
@@ -55,7 +55,16 @@ export default class LanguageFiles {
             })
           .then((content)=>{
             callback(content);
+          })
+          .catch((error)=>{
+            if (onError) {
+              onError(error.toString());
+            }
           });
+      } else {
+        if (onError) {
+          onError("Not a Json File");
+        }
       }
     }
 

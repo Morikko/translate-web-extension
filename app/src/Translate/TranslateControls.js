@@ -3,6 +3,21 @@ import {Navbar, Nav, NavDropdown, FormControl, Checkbox, FormGroup, Radio} from 
 import './TranslateControls.css'
 
 class TranslateControls extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      filter: props.filter,
+    };
+
+    this.handleFilterChange = this.handleFilterChange.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      filter: nextProps.filter,
+    });
+  }
 
   render(){
     return (
@@ -20,9 +35,9 @@ class TranslateControls extends Component {
         <Navbar.Collapse>
           <Navbar.Form pullLeft>
             <FormControl
-              onChange={this.props.onFilterChange}
+              onChange={this.handleFilterChange}
               type="text" placeholder="Filter..."
-              value={this.props.filter}/>
+              value={this.state.filter}/>
           </Navbar.Form >
           <Nav>
             <NavDropdown title="Visible" id="visible-nav-dropdown">
@@ -74,6 +89,14 @@ class TranslateControls extends Component {
         </Navbar.Collapse>
       </Navbar>
     );
+  }
+
+  handleFilterChange(event){
+    this.setState({
+      filter: event.target.value
+    });
+
+    this.props.onFilterChange(event);
   }
 }
 

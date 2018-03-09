@@ -118,11 +118,11 @@
   box-shadow: 0 0 3px 0px blue;
 }
 .update .translate-original {
-  box-shadow: 0 0 2px 1px yellow;
+  box-shadow: 0 0 2px 1px orange;
 }
 
 .diff .translate-target {
-  box-shadow: 0 0 2px 1px yellow;
+  box-shadow: 0 0 2px 1px orange;
 }
 .missing .translate-target {
   box-shadow: 0 0 3px 0px red;

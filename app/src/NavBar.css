@@ -5,11 +5,6 @@
   outline: none;
 }
 
-.navbar a:hover {
-  color: #ffc266;
-  background-color: transparent;
-}
-
 .menu-selected {
   color: #ff9900 !important;
 }
@@ -20,4 +15,22 @@
 
 .navbar-brand {
   color: #ff9900 !important;
+  cursor: default;
+}
+
+.dropdown-menu > li > a:hover {
+  background-color: #ffc266;
+}
+
+.navbar a:hover,
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:active,
+.navbar-inverse .navbar-nav > li > a:focus,
+.navbar-inverse .navbar-nav > .open > a:hover {
+  color: #ffc266;
+  background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:focus {
+  color: #ffc266;
 }

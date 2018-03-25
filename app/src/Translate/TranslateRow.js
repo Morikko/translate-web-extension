@@ -217,27 +217,27 @@ class TranslateRow extends Component {
         })}>
           {
             this.state.diff
-              && <div onClick={this.resetTargetField}
-                      className="reset-field">Reset</div>
+            && <div onClick={this.resetTargetField}
+               className="reset-field">Reset</div>
           }
           {
             this.state.update
-              && <div onClick={this.changeOriginal}>Old/New</div>
+            && <div onClick={this.changeOriginal}>Old/New</div>
           }
         </div>
 
         <div className="main-action"
-            >
+        >
           <span className="main-action-button center-vertically"
-              onClick={this.setDone}  >
+            onClick={this.setDone}  >
             <input
               disabled={this.state.unchanged}
               checked={this.state.done}
               onChange={()=>null}
               tabIndex={this.props.index+1}
               type="checkbox" style={{
-              margin: 0,
-            }} />
+                margin: 0,
+              }} />
             <label style={{
               margin: 0,
               paddingLeft: "10px",
@@ -272,7 +272,9 @@ class TranslateRow extends Component {
   }
 
   setDone(event) {
-    event.stopPropagation();
+    if ( event ) {
+      event.stopPropagation();
+    }
 
     if ( this.state.unchanged ) {
       return;
@@ -286,9 +288,10 @@ class TranslateRow extends Component {
     } else {
       this.updateTargetField("");
     }
+
     this.setState({
       showExtraActions: false,
-    })
+    }, ()=>this.props.updateDone(this.props.field, false));
   }
 
   updateTargetField(value) {

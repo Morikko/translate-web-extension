@@ -3,19 +3,29 @@ export default class LanguageFiles {
     static Information = {
       "headSourceLanguage": { // Current original language to translate
         title:"Current Source for Translation",
-        description:"File written by the developer",
+        description:[
+          "This file is mandatory."
+        ],
       },
       "baseSourceLanguage": { // Last original language translated
         title:"Last Source used for Translation",
-        description:"File written by the developer",
+        description:[
+          "This file is optional.",
+          "It will provide information to highlight changes and thus facilitate translation."
+        ],
       },
       "baseTargetLanguage": { // Last Translation done
         title:"Last Translated File",
-        description:"File written by the developer",
+        description:[
+          "This file is optional.",
+          "It will initialize the translated fields.",
+          "You can use the file in used in the application or any file you have already work on.",
+          "A reference is kept on the inital content to always indicate you the changes done so far."
+        ],
       },
       "headTargetLanguage": { // New translation in progress
         title:"Use another file as translated",
-        description:"File written by the developer",
+        description: undefined,
       },
     }
 
@@ -30,7 +40,7 @@ export default class LanguageFiles {
 
     static loadData(name, defaultData) {
       try {
-        if (window.sessionStorage[name]) {
+        if ( window.sessionStorage && window.sessionStorage[name]) {
           return JSON.parse(window.sessionStorage[name]);
         }
         return defaultData;

@@ -20,6 +20,7 @@ class ConfigurePanel extends Component {
           id={p}
           current={this.props.languagesFiles[p]}
           key={p}
+          description={LanguageFiles.Information[p].description}
           setLanguageFile={this.props.setLanguageFile}
           />
       )

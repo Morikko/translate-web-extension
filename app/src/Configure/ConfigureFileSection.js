@@ -61,11 +61,26 @@ class ConfigureFileSection extends Component {
         </div>
       )
     }
+    let description;
+    if (this.props.description.length){
+      description = (
+        <ul>
+          {
+            this.props.description.map((line, index)=>{
+              return (<li key={this.props.id+"-line-"+index}>
+                        {line}
+                      </li>);
+              })
+          }
+        </ul>
+      )
+    }
 
     return (
       <div className="file-section">
         <h2>{this.props.title}</h2>
         {this.props.optional && "[Optional]"}
+        {description}
         <div>
           <span>Current: {current}</span>
         </div>

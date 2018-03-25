@@ -6,7 +6,7 @@ import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter as Router, Route, Redirect, Switch} from 'react-router-dom'
 
 ReactDOM.render(
-  <Router component={App}>
+  <Router>
     <div>
       <Switch>
         <Route path="/translate-web-extension" component={App}/>

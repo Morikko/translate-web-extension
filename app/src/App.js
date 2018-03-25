@@ -37,27 +37,27 @@ class App extends Component {
     return (
         <div className="App">
           <AppNavBar {...this.props}
-              onRelease={this.downloadTranslatedFile.bind(this)}
-              onReset={this.reset.bind(this)}
-              onSave={this.exportApp.bind(this)}/>
+            onRelease={this.downloadTranslatedFile.bind(this)}
+            onReset={this.reset.bind(this)}
+            onSave={this.exportApp.bind(this)}/>
 
           <div style={{position: "relative", flex: 1}}>
-          <div id="panel">
-            <Switch>
-              <Route path={`${this.props.match.url}/help`}
-                      render={()=> <HelpPanel/>} />
-              <Route path={`${this.props.match.url}/translate`}
-                      render={()=>this.getTranslatePanel()}/>
-              <Route path={`${this.props.match.url}/configure`}
-                      render={(props)=>this.getConfigurePanel(props)}/>
-              <Route path={`${this.props.match.url}/release`}
-                      render={()=><h2>Release</h2>}/>
-              <Route component={()=><Redirect
-                      to={`${this.props.match.url}/configure`} />}/>
-            </Switch>
+            <div id="panel">
+              <Switch>
+                <Route path={`${this.props.match.url}/help`}
+                  render={()=> <HelpPanel/>} />
+                <Route path={`${this.props.match.url}/translate`}
+                  render={()=>this.getTranslatePanel()}/>
+                <Route path={`${this.props.match.url}/configure`}
+                  render={(props)=>this.getConfigurePanel(props)}/>
+                <Route path={`${this.props.match.url}/release`}
+                  render={()=><h2>Release</h2>}/>
+                <Route component={()=><Redirect
+                  to={`${this.props.match.url}/configure`} />}/>
+              </Switch>
+            </div>
           </div>
-        </div>
-        <a href="" download id="download-final" hidden>Get translated file</a>
+          <a href="" download id="download-final" hidden>Get translated file</a>
         </div>
     );
   }
@@ -81,9 +81,9 @@ class App extends Component {
     }
 
     return <ConfigurePanel
-              loadProject={this.loadApp}
-              languagesFiles={languagesFiles}
-              setLanguageFile={this.handleSetLanguageFile}/>
+      loadProject={this.loadApp}
+      languagesFiles={languagesFiles}
+      setLanguageFile={this.handleSetLanguageFile}/>
   }
 
   handleSetLanguageFile(id, source, content) {
@@ -213,6 +213,10 @@ class App extends Component {
         id: "baseTargetLanguage"
       },
     ];
+
+    if ( !window.location.search.length ) {
+      return
+    }
 
     for (let p of values ) {
       let param = this.getParameterByName(p.paramName);

@@ -13,7 +13,7 @@ class TranslateRow extends Component {
     }
 
     Object.assign(this.state, this.getFieldValues(props));
-    Object.assign(this.state, this.getFieldStates(props));
+    Object.assign(this.state, this.getFieldStates(props, this.state));
 
     this.resetTargetField = this.resetTargetField.bind(this);
     this.changeOriginal = this.changeOriginal.bind(this);
@@ -24,7 +24,7 @@ class TranslateRow extends Component {
     let nextState = Object.assign({}, this.state);
 
     Object.assign(nextState, this.getFieldValues(nextProps));
-    Object.assign(nextState, this.getFieldStates(nextProps));
+    Object.assign(nextState, this.getFieldStates(nextProps, nextState));
 
     this.setState(nextState);
   }
@@ -32,16 +32,18 @@ class TranslateRow extends Component {
   getFieldValues(props) {
     return  {
       original: props.headSourceField.message,
-      target: (props.headTargetField && props.headTargetField.message)  ||"",
+      target: props.headTargetField
+        ?props.headTargetField.message
+        :"",
       description: props.headSourceField.description||"",
     }
   }
 
-  getFieldStates(props){
+  getFieldStates(props, state){
     let fieldStates = {
       new: false,
-      update: false,
-      diff: false,
+      update: false, // original
+      diff: false, // target
       todo: false,
       unchanged: false,
       missing: false,
@@ -54,14 +56,16 @@ class TranslateRow extends Component {
         fieldStates.new = true;
     }
 
+    /*
     if ( !props.baseTargetField && this.state.target.length ) {
       fieldStates.diff = true;
     }
-    if (props.baseTargetField && props.headTargetField && this.state.target !== props.baseTargetField.message) {
+    */
+    if (props.baseTargetField && props.headTargetField && state.target !== props.baseTargetField.message) {
       fieldStates.diff = true;
     }
 
-    if ( this.state.target.length===0 ) {
+    if ( state.target.length===0 ) {
       fieldStates.missing = true;
     }
 
@@ -110,7 +114,7 @@ class TranslateRow extends Component {
   render() {
     return (
       <div
-          className={ classNames({
+        className={ classNames({
             "unchanged": this.state.unchanged,
             "todo": this.state.todo,
             "done": this.state.done,
@@ -120,7 +124,7 @@ class TranslateRow extends Component {
             "new": this.state.new,
             "diff": this.state.diff,
             "missing": this.state.missing,
-          }, "translate-row translate-field")}>
+        }, "translate-row translate-field")}>
         {this.getIdField()}
         {this.getOriginalField()}
         {this.getTargetField()}
@@ -145,13 +149,13 @@ class TranslateRow extends Component {
     return (
       <div className="translate-target" key={"div-"+id}>
         <textarea
-            refid={id}
-            value={this.state.target}
-            onChange={this.handleTextAreaChange.bind(this)}
-            onBlur={this.handleTextAreaChange.bind(this)}
-            key={"textarea-"+id}
-            tabIndex={this.props.index}
-            ></textarea>
+          refid={id}
+          value={this.state.target}
+          onChange={this.handleTextAreaChange.bind(this)}
+          onBlur={this.handleTextAreaChange.bind(this)}
+          key={"textarea-"+id}
+          tabIndex={this.props.index}
+        ></textarea>
       </div>
     );
   }

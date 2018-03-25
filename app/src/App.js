@@ -68,10 +68,10 @@ class App extends Component {
       languagesFiles[p] = this.state[p].content;
     }
       return <TranslatePanel
-                languagesFiles={languagesFiles}
-                updateTranslation={this.updateTranslation}
-                updateDone={this.setDone}
-                doneLog={this.state.doneLog}/>
+        languagesFiles={languagesFiles}
+        updateTranslation={this.updateTranslation}
+        updateDone={this.setDone}
+        doneLog={this.state.doneLog}/>
   }
 
   getConfigurePanel(props) {
@@ -100,7 +100,7 @@ class App extends Component {
       doneLog: {},
     });
     window.sessionStorage[id] = JSON.stringify(file);
-    window.sessionStorage.doneLog = {};
+    window.sessionStorage.doneLog = JSON.stringify({});
 
     if ( id === "baseTargetLanguage") {
       this.handleSetLanguageFile("headTargetLanguage", source, content)

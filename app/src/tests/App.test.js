@@ -1,6 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from '../App';
+// App behavior
 import LanguageFiles from '../LanguageFiles';
 import Helpers from './helpers'
 
@@ -59,7 +57,7 @@ it('doneLog is reset on call on handleSetLanguageFile', () => {
     "headTargetLanguage", "test", {}
   );
   expect(app.state.doneLog).toEqual({});
-  expect(window.sessionStorage.doneLog).toEqual({});
+  expect(window.sessionStorage.doneLog).toEqual("{}");
 
   window.sessionStorage = {};
   Helpers.closeApp(el);

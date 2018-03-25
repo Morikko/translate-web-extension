@@ -45,7 +45,7 @@ export default class LanguageFiles {
         }
         return defaultData;
       } catch(e) {
-        console.error("App.loadData: " + e);
+        console.error("LanguageFiles.loadData: " + e);
         return defaultData;
       }
     }

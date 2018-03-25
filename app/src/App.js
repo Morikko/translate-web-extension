@@ -100,7 +100,7 @@ class App extends Component {
       doneLog: {},
     });
     window.sessionStorage[id] = JSON.stringify(file);
-    window.sessionStorage.removeItem("doneLog");
+    window.sessionStorage.doneLog = {};
 
     if ( id === "baseTargetLanguage") {
       this.handleSetLanguageFile("headTargetLanguage", source, content)
@@ -122,16 +122,13 @@ class App extends Component {
     window.sessionStorage.headTargetLanguage = JSON.stringify(this.state.headTargetLanguage);
   }
 
+  /**
+   * @param {String} id - key in locales.json
+   */
   setDone(id, value) {
     let nextDoneLog = Object.assign({}, this.state.doneLog);
-    if ( value ) {
-      nextDoneLog[id] = true;
+    nextDoneLog[id] = value;
 
-    } else {
-      if ( this.state.doneLog[id] ) {
-        delete nextDoneLog[id];
-      }
-    }
     this.setState({
       doneLog: nextDoneLog,
     }, ()=>{
@@ -153,7 +150,6 @@ class App extends Component {
   }
 
   reset(event) {
-
     if( window.confirm("Do you want to reset the project ?") ) {
       let newState = {};
       LanguageFiles.ids.forEach((file)=>{
@@ -164,7 +160,6 @@ class App extends Component {
       window.sessionStorage.removeItem("doneLog");
       this.setState(newState);
     }
-
   }
 
   exportApp(event) {
@@ -178,7 +173,7 @@ class App extends Component {
       type: 'application/json'
     }));
     download.href = url;
-    download.download = "project.json";
+    //download.download = "project.json";
     download.click();
     URL.revokeObjectURL(url);
   }

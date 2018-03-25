@@ -2,10 +2,18 @@
 import LanguageFiles from '../LanguageFiles';
 import Helpers from './helpers'
 
-window.sessionStorage = {};
-window.sessionStorage.removeItem = (el)=>{
-  delete window.sessionStorage[el];
-};
+var app, el;
+
+beforeEach(() => {
+  window.sessionStorage = {};
+  [app, el] = Helpers.instanciateApp();
+});
+
+afterEach(() => {
+  Helpers.closeApp(el);
+  window.sessionStorage = {};
+});
+
 
 it('renders without crashing', () => {
   let [app, el] = Helpers.instanciateApp();
@@ -13,8 +21,6 @@ it('renders without crashing', () => {
 });
 
 it('add language file', () => {
-  let [app, el] = Helpers.instanciateApp();
-
   const source = "test";
   for (let id of LanguageFiles.ids) {
     app.handleSetLanguageFile(
@@ -38,13 +44,9 @@ it('add language file', () => {
       );
     }
   }
-  window.sessionStorage = {};
-  Helpers.closeApp(el);
 });
 
 it('doneLog is reset on call on handleSetLanguageFile', () => {
-  let [app, el] = Helpers.instanciateApp();
-
   const doneLog = "coucou"
   app.setState({
     doneLog
@@ -58,14 +60,9 @@ it('doneLog is reset on call on handleSetLanguageFile', () => {
   );
   expect(app.state.doneLog).toEqual({});
   expect(window.sessionStorage.doneLog).toEqual("{}");
-
-  window.sessionStorage = {};
-  Helpers.closeApp(el);
 });
 
 it('add done value', () => {
-  let [app, el] = Helpers.instanciateApp();
-
   const first = "first", second = "second";
   const firstDone = {
     [first]: true,
@@ -95,14 +92,9 @@ it('add done value', () => {
   expect(window.sessionStorage.doneLog).toEqual(
     JSON.stringify(secondDone)
   );
-
-  window.sessionStorage = {};
-  Helpers.closeApp(el);
 });
 
 it('update well translatation', () => {
-  let [app, el] = Helpers.instanciateApp();
-
   const id = "test";
   // Add
   const addExpect = {
@@ -145,7 +137,4 @@ it('update well translatation', () => {
   .toEqual(
     removeExpect
   );
-
-  window.sessionStorage = {};
-  Helpers.closeApp(el);
 });

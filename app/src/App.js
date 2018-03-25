@@ -139,7 +139,7 @@ class App extends Component {
   downloadTranslatedFile(event) {
     let download = document.getElementById('download-final');
     let url = URL.createObjectURL(new Blob([
-      JSON.stringify(this.state.headTargetLanguage.content)
+      JSON.stringify(this.getFullTranslation())
     ], {
       type: 'application/json'
     }));
@@ -147,6 +147,21 @@ class App extends Component {
     download.download = "messages.json";
     download.click();
     URL.revokeObjectURL(url);
+  }
+
+  getFullTranslation() {
+    const translation = {};
+    const source = this.state.headTargetLanguage.content;
+    const target = this.state.headTargetLanguage.content;
+
+    for (let id of Object.keys(source)) {
+      if ( target[id].message.length > 0 ) {
+        translation[id] = JSON.parse(JSON.stringify(source[id]));
+        translation[id].message = target[id].message;
+      }
+    }
+
+    return translation;
   }
 
   reset(event) {

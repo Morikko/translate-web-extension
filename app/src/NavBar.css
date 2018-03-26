@@ -34,3 +34,11 @@
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:focus {
   color: #ffc266;
 }
+
+.navbar-right > li > a {
+  padding: 0;
+}
+
+.navbar-right > li > a > img {
+  height: 48px;
+}

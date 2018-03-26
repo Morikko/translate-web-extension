@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {NavLink} from 'react-router-dom'
-import {Navbar, Nav, MenuItem, NavDropdown} from 'react-bootstrap'
+import {Navbar, Nav, MenuItem, NavDropdown, NavItem} from 'react-bootstrap'
+import github from './github.png'
 import './NavBar.css'
 
 class AppNavBar extends Component {
@@ -19,37 +20,45 @@ class AppNavBar extends Component {
         </Navbar.Header>
         <Navbar.Collapse>
 
-            <Navbar.Text >
-              <NavLink to={`${this.props.match.url}/help`}
-                        activeClassName="menu-selected">
-                  Help
-              </NavLink>
-            </Navbar.Text>
+          <Navbar.Text >
+            <NavLink to={`${this.props.match.url}/help`}
+            activeClassName="menu-selected">
+              Help
+            </NavLink>
+          </Navbar.Text>
 
-            <Navbar.Text >
-              <NavLink
-                  to={`${this.props.match.url}/configure`}
-                  activeClassName="menu-selected">
-                  Configure</NavLink>
-            </Navbar.Text>
+          <Navbar.Text >
+            <NavLink
+              to={`${this.props.match.url}/configure`}
+            activeClassName="menu-selected">
+            Configure</NavLink>
+          </Navbar.Text>
 
-            <Navbar.Text  >
-              <NavLink
-                  to={`${this.props.match.url}/translate`}
-                  activeClassName="menu-selected">
-                  Translate</NavLink>
-            </Navbar.Text>
+          <Navbar.Text  >
+            <NavLink
+              to={`${this.props.match.url}/translate`}
+            activeClassName="menu-selected">
+            Translate</NavLink>
+          </Navbar.Text>
           <Nav>
             <NavDropdown eventKey={3} title="Project" id="basic-nav-dropdown">
               <MenuItem eventKey={3.1}
                 onClick={this.props.onSave}>Save</MenuItem>
               <MenuItem eventKey={3.2}
                 onClick={this.props.onReset}
-                className="reset-project">Reset</MenuItem>
+              className="reset-project">Reset</MenuItem>
               <MenuItem divider />
               <MenuItem eventKey={3.3}
                 onClick={this.props.onRelease}>Release</MenuItem>
             </NavDropdown>
+          </Nav>
+          <Nav pullRight>
+            <NavItem
+              eventKey={1}
+              href="https://github.com/Morikko/translate-web-extension"
+            >
+              <img src={github} alt="github" />
+            </NavItem>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

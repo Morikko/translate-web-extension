@@ -188,7 +188,8 @@ class App extends Component {
       type: 'application/json'
     }));
     download.href = url;
-    //download.download = "project.json";
+    let d = new Date();
+    download.download = "project" + "-" + d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2) + "-" + ("0" + d.getHours()).slice(-2) + ("0" + d.getMinutes()).slice(-2) + ("0" + d.getSeconds()).slice(-2) + ".json";
     download.click();
     URL.revokeObjectURL(url);
   }

@@ -75,6 +75,8 @@ Translate Web-Ext makes the workflow easy:
 
 It is also possible to directly custom all the environment through the URL parameters. Thus, as the extension organizer, you can provide directly a link that points to the previous file translated.
 
+[Example of how to use it for your extension](https://github.com/Morikko/sync-tab-groups#translation).
+
 Try to replace the URLs:
   - Current file to translate:
   <input type="text" id="url-current"

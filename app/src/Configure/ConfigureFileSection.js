@@ -57,7 +57,7 @@ class ConfigureFileSection extends Component {
     if ( this.state.error.length ) {
       errorField = (
         <div>
-          Error: {this.state.error}
+          Message: {this.state.error}
         </div>
       )
     }
@@ -93,14 +93,14 @@ class ConfigureFileSection extends Component {
             selected={this.state.type}
             choices={[
               {value: ConfigureFileSection.TYPE.FILE, label:"File"},
-              {value: ConfigureFileSection.TYPE.GIT, label:"Git"}
+              {value: ConfigureFileSection.TYPE.GIT, label:"URL"}
             ]}
-            />
-           <div>
-             {typeSection}
-           </div>
+          />
+          <div>
+            {typeSection}
+          </div>
         </div>
-      {errorField}
+        {errorField}
       </div>
     );
   }
@@ -125,11 +125,11 @@ class ConfigureFileSection extends Component {
     LanguageFiles.loadUrl(
       this.state.url
       , (content)=>{
-        this.setState({error: ""});
+        this.setState({error: "The URL has been fetched!"});
         this.props.setLanguageFile(this.props.id, this.state.url, content);
       }
       , (error) => {
-        this.setState({error: error});
+        this.setState({error: "[Error] " + error});
       }
     );
   }

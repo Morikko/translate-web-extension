@@ -29,44 +29,44 @@ h3 {
   min-height: 20px;
 }
 
-.normal {
+.help-normal {
   border: 1px solid black;
 }
 
-.diff {
+.help-diff {
   box-shadow: 0 0 2px 1px orange;
 }
 
-.new {
+.help-new {
   box-shadow: 0 0 3px 0px blue;
 }
 
-.empty {
+.help-empty {
   box-shadow: 0 0 3px 0px red;
 }
 
-.unchanged::after {
+.help-unchanged::after {
   background-color: #ddd;
   color: #bbb;
   content: "Unchanged";
 }
-.todo::after {
+.help-todo::after {
   background-color: #ccc;
   color: #000;
   content: "To Do";
 }
-.done::after {
+.help-done::after {
   background-color: #c2f0c2;
   color: #28a428;
   content: "Done";
 }
 
-.text-red::after {
+.help-text-red::after {
   color: red;
   content: "Red"
 }
 
-.text-green::after {
+.help-text-green::after {
   color: green;
   content: "Green"
 }

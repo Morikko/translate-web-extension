@@ -1,4 +1,8 @@
 var generateUrl = function() {
+  if ( document.getElementById("url-generated") === null ) {
+    return;
+  }
+
   let url = "https://morikko.github.io/translate-web-extension/translate";
 
   let params = [
@@ -21,4 +25,6 @@ var generateUrl = function() {
 }
 
 
-document.addEventListener("DOMContentLoaded", generateUrl);
+document.addEventListener("DOMContentLoaded", ()=>{
+  setTimeout(generateUrl, 500);
+});

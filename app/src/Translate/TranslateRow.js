@@ -240,6 +240,7 @@ class TranslateRow extends Component {
               onChange={()=>null}
               tabIndex={this.props.index+1}
               type="checkbox" style={{
+                width: "initial",
                 margin: 0,
               }} />
             <label style={{

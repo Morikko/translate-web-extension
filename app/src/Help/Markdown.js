@@ -15,21 +15,21 @@ Translate Web-Ext makes the workflow easy:
 ### The original field
 - The original text written in the application
 - Feedback (need previous language file)
-  - <span class="box normal"></span> Text unchanged
-  - <span class="box new"></span> New text
-  - <span class="box diff"></span> Text changed since
+  - <span class="box help-normal"></span> Text unchanged
+  - <span class="box help-new"></span> New text
+  - <span class="box help-diff"></span> Text changed since
 - In case of changes in the text, it is written in:
-  - <span class="text-green"></span> for the changes added (default)
-  - <span class="text-red"></span> for how it was before (Click on "Old/New" in the arrow button in the id column)
+  - <span class="help-text-green"></span> for the changes added (default)
+  - <span class="help-text-red"></span> for how it was before (Click on "Old/New" in the arrow button in the id column)
 
 ![switch_old_new](https://user-images.githubusercontent.com/7831572/37932791-ad61a014-3149-11e8-89a5-cdb3cfba229d.png)
 
 ### The target field
 - The translated text
 - Feedback (need last translation file)
-  - <span class="box normal"></span> text unchanged
-  - <span class="box empty"></span> no tranlation provided (empty)
-  - <span class="box diff"></span> you have changed the field
+  - <span class="box help-normal"></span> text unchanged
+  - <span class="box help-empty"></span> no tranlation provided (empty)
+  - <span class="box help-Cdiff"></span> you have changed the field
 
 ### The row
 - There are 3 states:

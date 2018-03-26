@@ -1,0 +1,76 @@
+#help-panel {
+  max-height: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 10px;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+}
+
+#help-content {
+  max-width: 1000px;
+}
+
+h2 {
+  margin-left: 10px;
+}
+
+h3 {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.box {
+  display: inline-block;
+  position: relative;
+  top: 5px;
+  min-width: 30px;
+  min-height: 20px;
+}
+
+.normal {
+  border: 1px solid black;
+}
+
+.diff {
+  box-shadow: 0 0 2px 1px orange;
+}
+
+.new {
+  box-shadow: 0 0 3px 0px blue;
+}
+
+.empty {
+  box-shadow: 0 0 3px 0px red;
+}
+
+.unchanged::after {
+  background-color: #ddd;
+  color: #bbb;
+  content: "Unchanged";
+}
+.todo::after {
+  background-color: #ccc;
+  color: #000;
+  content: "To Do";
+}
+.done::after {
+  background-color: #c2f0c2;
+  color: #28a428;
+  content: "Done";
+}
+
+.text-red::after {
+  color: red;
+  content: "Red"
+}
+
+.text-green::after {
+  color: green;
+  content: "Green"
+}
+
+input {
+  width: 100%;
+}

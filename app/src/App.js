@@ -3,7 +3,7 @@ import './App.css';
 import {Route, Redirect, Switch} from 'react-router-dom'
 import ConfigurePanel from './Configure/ConfigurePanel';
 import TranslatePanel from './Translate/TranslatePanel';
-import HelpPanel from './HelpPanel'
+import HelpPanel from './Help/HelpPanel'
 import LanguageFiles from './LanguageFiles'
 import AppNavBar from './NavBar'
 

@@ -190,32 +190,9 @@ it("exports placeholders as well", () => {
 
   expect(translation.hasOwnProperty("test_2")).toBe(true);
   expect(translation.test_2.message).toEqual(modification);
-  expect(translation.test_2.hasOwnProperty("placeholders")).toBe(true);
-  expect(translation.test_2.placeholders).toEqual(subOject);
-});
-
-it("exports placeholders as well", () => {
-  const subOject = {
-    folder : {
-      content: "$1",
-      example: "backup/"
-    }
-  }
-  const fakeHeadSource = {
-    test_2: {
-      message: "Done in the subfolder '$FOLDER$'.",
-      description: "",
-      placeholders: subOject
-    }
-  };
-  const modification = "Dans le sous-dossier '$FOLDER$'.";
-  app.handleSetLanguageFile("headSourceLanguage", "", fakeHeadSource);
-
-  app.updateTranslation("test_2", modification);
-  const translation = app.getFullTranslation();
-
-  expect(translation.hasOwnProperty("test_2")).toBe(true);
-  expect(translation.test_2.message).toEqual(modification);
+  expect(translation.test_2.hasOwnProperty("description")).toBe(true);
+  expect(translation.test_2.description)
+    .toEqual(fakeHeadSource.test_2.description);
   expect(translation.test_2.hasOwnProperty("placeholders")).toBe(true);
   expect(translation.test_2.placeholders).toEqual(subOject);
 });

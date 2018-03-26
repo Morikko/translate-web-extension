@@ -33,12 +33,17 @@ class TranslateControls extends Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Navbar.Form pullLeft>
+          {
+              /*
+            <Navbar.Form pullLeft>
             <FormControl
               onChange={this.handleFilterChange}
               type="text" placeholder="Filter..."
               value={this.state.filter}/>
-          </Navbar.Form >
+            </Navbar.Form >
+              */
+          }
+          
           <Nav>
             <NavDropdown title="Visible" id="visible-nav-dropdown">
               <FormGroup style={{

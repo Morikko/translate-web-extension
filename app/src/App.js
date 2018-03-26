@@ -111,7 +111,7 @@ class App extends Component {
     if ( value.length ) {
       if ( !this.state.headTargetLanguage.content[id] ) {
         // eslint-disable-next-line
-        this.state.headTargetLanguage.content[id] = {...this.state.headSourceLanguage.content[id]};
+        this.state.headTargetLanguage.content[id] = {};
       }
       // eslint-disable-next-line
       this.state.headTargetLanguage.content[id].message = value;
@@ -139,7 +139,7 @@ class App extends Component {
   downloadTranslatedFile(event) {
     let download = document.getElementById('download-final');
     let url = URL.createObjectURL(new Blob([
-      JSON.stringify(this.getFullTranslation())
+      JSON.stringify(this.getFullTranslation(), null, 2)
     ], {
       type: 'application/json'
     }));
@@ -151,7 +151,7 @@ class App extends Component {
 
   getFullTranslation() {
     const translation = {};
-    const source = this.state.headTargetLanguage.content;
+    const source = this.state.headSourceLanguage.content;
     const target = this.state.headTargetLanguage.content;
 
     for (let id of Object.keys(source)) {

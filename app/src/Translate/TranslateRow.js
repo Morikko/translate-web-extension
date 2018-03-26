@@ -58,11 +58,11 @@ class TranslateRow extends Component {
         fieldStates.new = true;
     }
 
-    /*
+    /* When field is new and changed */
     if ( !props.baseTargetField && this.state.target.length ) {
       fieldStates.diff = true;
     }
-    */
+
     if (props.baseTargetField && props.headTargetField && state.target !== props.baseTargetField.message) {
       fieldStates.diff = true;
     }

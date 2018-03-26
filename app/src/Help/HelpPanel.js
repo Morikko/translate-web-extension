@@ -16,6 +16,11 @@ class HelpPanel extends Component {
       </div>
     )
   }
+
+  componentDidMount(){
+    // Set example URL
+    window.generateUrl();
+  }
 }
 
 export default HelpPanel;

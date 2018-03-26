@@ -71,6 +71,7 @@ h3 {
   content: "Green"
 }
 
-input {
+#help-panel input {
   width: 100%;
+  padding: 3px;
 }

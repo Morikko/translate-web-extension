@@ -189,7 +189,13 @@ class App extends Component {
     }));
     download.href = url;
     let d = new Date();
-    download.download = "project" + "-" + d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2) + "-" + ("0" + d.getHours()).slice(-2) + ("0" + d.getMinutes()).slice(-2) + ("0" + d.getSeconds()).slice(-2) + ".json";
+    download.download = "project-" + d.getFullYear()
+      + ("0" + (d.getMonth() + 1)).slice(-2)
+      + ("0" + d.getDate()).slice(-2)
+      + "-" + ("0" + d.getHours()).slice(-2)
+      + ("0" + d.getMinutes()).slice(-2)
+      + ("0" + d.getSeconds()).slice(-2)
+      + ".json";
     download.click();
     URL.revokeObjectURL(url);
   }

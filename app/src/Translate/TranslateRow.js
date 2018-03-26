@@ -24,7 +24,9 @@ class TranslateRow extends Component {
     let nextState = Object.assign({}, this.state);
 
     Object.assign(nextState, this.getFieldValues(nextProps));
-    Object.assign(nextState, this.getFieldStates(nextProps, nextState));
+    Object.assign(nextState, this.getFieldStates(
+      nextProps, nextState)
+    );
 
     this.setState(nextState);
   }
@@ -306,7 +308,7 @@ class TranslateRow extends Component {
       this.setState(
         Object.assign(
           Object.assign({}, this.state)
-          , this.getFieldStates(this.props))
+          , this.getFieldStates(this.props, this.state))
       );
     });
 
